@@ -1,0 +1,596 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+@font-face {
+    font-family: "Whitney-black";
+    src: url(../fonts/whitneybold.otf)
+}
+@font-face {
+    font-family: "Whitney-medium";
+    src: url(../fonts/whitneysemibold.otf)
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: "Whitney-medium";
+    color: white;
+    position: relative;
+}
+:root {
+    --main-blue: #7289DA;
+    --main-white: #FFFFFF;
+    --main-gray: #99AAB5;
+    --main-dark: #2C2F33;
+    --main-black: #23272A;
+}
+
+html, body {
+    height: 100%;
+    background-color: var(--main-dark);
+    font-size: 0px;
+}
+body > * {
+    display: inline-block;
+    vertical-align: top;
+    height: 100%;
+}
+.icon {
+    display: inline-block;
+    background-size: cover;
+    width: 15px;
+    height: 15px;
+}
+.hidden {
+    display: none;
+}
+.icon.wifi-icon {
+    background-image: url(../images/wifi-icon.png);
+}
+.icon.plus-icon {
+    background-image: url(../images/plus-icon.png);
+}
+.icon.arrow-down-icon {
+    background-image: url(../images/down-arrow.png);
+}
+.icon.send-icon {
+    background-image: url(../images/send.png);
+}
+.icon.delete-icon {
+    background-image: url(../images/delete.png);
+}
+.icon.info-icon {
+    background-image: url(../images/info.png);
+}
+h1,
+.bold {
+    font-family: "Whitney-black";
+    font-size: 25px;
+    display: inline-block;
+}
+input[type="text"],
+input[type="number"],
+select {
+    background-color: var(--main-black);
+    color: white;
+    border: 1px solid #99AAB5;
+    border-radius: 5px;
+    padding: 0 20px;
+    outline: none;
+    line-height: 45px;
+}
+textarea {
+    background-color: var(--main-black);
+    width: 100%;
+    border: 1px solid #99AAB5;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+select {
+    height: 45px;
+}
+input.error,
+textarea.error {
+    border: 1px solid red;
+    color: red;
+}
+input[type=submit],
+.btn-default {
+    color: white;
+    text-align: center;
+    background-color: var(--main-blue);
+    border: none;
+    border-radius: 5px;
+    line-height: 50px;
+    outline: none;
+}
+input[type=text]:hover,
+input[type=text]:focus,
+input[type=number]:hover,
+input[type=number]:focus,
+textarea:hover,
+textarea:focus {
+    border: 1px solid #7289DA;
+}
+
+.module {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+
+.module.open .module-background {
+    opacity: 1;
+}
+.module.open .module-padding {
+    top: 100px;
+}
+.module .module-background {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 1s;
+}
+.module .module-padding {
+    padding: 10px;
+    position: absolute;
+    left: calc(50% - 300px);
+    top: -500px;
+    transition: top 0.5s;
+    width: 600px;
+}
+.module .module-body {
+    background-color: var(--main-dark);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+
+.module .module-body header {
+    padding: 30px;
+    font-size: 16px;
+}
+
+.module .module-body .module-content {
+    padding: 30px;
+    padding-top: 0px;
+}
+.module .module-body .module-content p {
+    margin-bottom: 20px;
+}
+.module input {
+    width: 100%;
+}
+
+.module input[type=submit] {
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+}
+.module input[type=submit]:hover {
+    background-color: #536399;
+}
+
+.builder {
+    width: calc(100% - 600px) /* Minus two sidebars */
+}
+.builder > header {
+    display: flex;
+    align-items: center;
+    height: 70px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.builder > header .logo {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+.builder > header .logo img {
+    height: 35px;
+    width: 35px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.builder .status-ball {
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 100%;
+    display: inline-block;
+    margin-right: 5px;
+}
+.builder .status-ball.offline {
+    background-color: red;
+}
+.builder .status-ball.online {
+    background-color: greenyellow;
+}
+
+.builder .status-text,
+.builder .nav-item {
+    display: inline-block;
+}
+.builder .nav-item {
+    margin-left: 30px;
+    cursor: default;
+}
+
+.builder .run-btn {
+    font-size: 18px;
+    color: var(--main-blue);
+}
+.builder .nav-item:hover * {
+    color: lightgreen;
+}
+.builder .download:hover,
+.builder .upload:hover {
+    color: var(--main-blue);
+}
+.builder .unsaved h3 {
+    color: red;
+}
+.builder .unsaved:hover h3 {
+    color: darkred;
+}
+.builder header .space {
+    flex-grow: 1;
+}
+
+.builder header .console-btn {
+    color: var(--main-gray);
+    cursor: default;
+}
+.builder header .console-btn:hover,
+.builder .console header span:last-child:hover {
+    color: white;
+}
+.builder .project {
+    height: calc(100% - 250px - 70px);
+    overflow: auto;
+}
+.builder .project {
+    padding: 10px 20px;
+}
+.builder .project .component-list {
+    height: 100%;
+}
+.builder .project .component {
+    margin-bottom: 10px;
+}
+.builder .project li > .icon {
+    margin-right: 20px;
+}
+
+.builder .console {
+    height: 250px;
+    overflow: hidden;
+}
+.builder .console * {
+    font-size: 12px;
+    color: var(--main-gray);
+    cursor: default;
+}
+
+.builder .console header {
+    background-color: var(--main-black);
+    line-height: 25px;
+    padding: 0 10px;
+    display: flex;
+}
+.builder .console header span:first-child {
+    flex-grow: 1;
+}
+.builder .console .console-content {
+    padding: 10px;
+    overflow: auto;
+    max-height: calc(100% - 25px);
+}
+
+.builder .console .console-content > span {
+    display: block;
+    padding: 5px;
+}
+.builder .console .console-content > span span {
+    display: inline-block;
+}
+.builder .console .console-content .time {
+    width: 40px;
+}
+.builder .console .console-content .text {
+    width: calc(100% - 40px);
+}
+.sidebar {
+    border-right: 1px solid #23272A;
+    border-left: 1px solid #23272A;
+    width: 300px;
+    font-size: 0px;
+}
+.sidebar header {
+    font-family: "Whitney-black";
+    text-align: center;
+    font-size: 20px;
+    line-height: 70px;
+    cursor: default;
+}
+.sidebar-nav header {
+    display: inline-block;
+    width: 50%;
+    color: var(--main-gray);
+}
+.sidebar-nav header.selected {
+    color: white;
+}
+.sidebar-nav header:hover {
+    color: white;
+}
+.sidebar-nav .component-list {
+    display: none;
+    height: calc(100% - 70px);
+    overflow: auto;
+}
+.sidebar-nav .component-list.open {
+    display: block;
+}
+
+
+/* ------- COMPONENT -------*/
+
+
+.component-list li {
+    display: block;
+}
+.component-list .component {
+    border-top: 1px solid #2C2F33;
+}
+.component.active {
+    border-left: 1px solid #7289DA;
+}
+
+.component-list .component .component-visual {
+    background-color: var(--main-black);
+    height: 40px;
+    display: flex;
+    cursor: default;
+    align-items: center;
+    padding: 0 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.component-list .component .component-visual .ghost {
+    color: var(--main-blue);
+    font-size: 12px;
+    position: absolute;
+    right: 40px;
+    display: none;
+}
+
+.component-list .component.highlighted > .component-visual,
+.component-list .component.active > .component-visual {
+    background-color: var(--main-blue);
+}
+.component-list .component.error > .component-visual .text {
+    color: #FF5151;
+}
+.component .component-visual .text {
+    /*The visible part*/
+    color: var(--main-gray);
+    flex-grow: 1;
+}
+.component .component-visual a:hover {
+    text-decoration: underline;
+    color: lightgray;
+}
+
+.component .component-visual .visual-btn {
+    margin-right: 20px;
+    color: lightgray;
+    display: none;
+    margin-left: 10px;
+    text-decoration: none;
+}
+.component .component-visual .remove-btn:hover {
+    color: red;
+}
+.component:hover > .component-visual .visual-btn,
+.component.active > .component-visual .visual-btn {
+    display: inline-block
+}
+.component .component-visual .icon {
+    height: 10px;
+    width: 10px;
+    transition: transform 0.3s;
+}
+.component.active .component-visual .icon {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+.component .component-visual:hover .text,
+.component.highlighted > .component-visual .text,
+.component.active > .component-visual > .text {
+    color: white;
+}
+
+.component .component-visual:hover .icon,
+.component.active > .component-visual .icon {
+    display: block;
+}
+
+.component .component-dropdown {
+    display: none;
+    padding: 20px;
+}
+.component.active > .component-dropdown {
+    display: block;
+}
+
+.component .component-dropdown p {
+    padding-bottom: 10px;
+}
+.component .component-dropdown > a:hover {
+    color: var(--main-blue);
+}
+.component h1 {
+    font-size: 16px;
+    padding: 10px 0;
+}
+.component input, .component textarea {
+    font-family: "Fira Code", monospace;
+    font-size: 13px;
+}
+.component .component-inputs .input-row {
+    display: flex;
+    padding-bottom: 10px;
+    align-items: center;;
+}
+.component .component-inputs .input-row .input {
+    flex-grow: 1;
+    margin: 0 5px;
+    display: inline-block;
+}
+.component .component-inputs .input-row select {
+    margin: 0 10px;
+}
+.component .component-inputs textarea {
+    min-height: 200px;
+}
+.component .component-inputs .input-row .input input {
+    width: 100%;
+    position: relative;
+}
+.component .component-inputs .input-row .input .icon {
+    position: absolute;
+    right: 15px;
+    top: calc(50% - 7.5px);
+    display: none;
+}
+.component .component-inputs .input-row .input:hover .icon,
+.component .component-inputs .input-row .input.active .icon {
+    display: block;
+}
+.component .component-inputs .input-row .input:hover input {
+    border: 1px solid #7289DA;
+}
+.component .component-inputs .input-row .input .input-desc {
+    padding: 15px;
+    border: 1px solid #7289DA;
+    border-top: none;
+    border-top: none;
+    background-color: var(--main-black);
+    font-size: 12.5px;
+    display: none;
+    position: absolute;
+    z-index: 500;
+    width: 100%;
+}
+.component .component-inputs .input-row .input.active input {
+    border: 1px solid #7289DA;
+    border-bottom: 1px solid transparent;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.component .component-inputs .input-row .input.active .input-desc {
+    display: block;
+}
+.component-inputs .component-checkbox span {
+    display: inline-block;
+    vertical-align: middle;
+}
+.component-inputs .component-checkbox {
+    justify-content: center;
+    text-align: center;
+    padding: 0 10px;
+}
+.component-inputs .component-checkbox input {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.component-inputs .component-file {
+    margin: 0 5px;
+    padding: 0 20px;
+}
+.component-inputs .component-file.error {
+    border: 1px solid red;
+    color: red;
+}
+.component-inputs .component-file > div {
+    display: inline-block;
+    vertical-align: middle;
+}
+.component-inputs .component-file label {
+    display: block;
+    color: var(--main-blue);
+}
+.component-inputs .component-file label:hover {
+    text-decoration: underline;
+}
+.component-inputs .component-file img {
+    height: 45px;
+    width: 45px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+.component-statements .icon {
+    margin-left: 10px;
+    height: 10px;
+    width: 10px;
+}
+.component .component-inputs .new-statement {
+    color: var(--main-blue);
+    padding-top: 5px;
+    padding-bottom: 15px;
+    display: inline-block;
+    cursor: default;
+    font-size: 13px;
+}
+.component .component-inputs .new-statement:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+.component-list li.no-components {
+    color: #212121;
+    font-size: 30px;
+    font-family: "Whitney-black";
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.component-list li.no-components p {
+    display: inline-block;
+}
+.component[data-type="event"] .component-list li.no-components {
+    font-size: 18px;
+}
+
+
+/* ------- COMPONENT END -------*/
+
+/* WEBKIT SCROLL BAR */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: var(--main-back);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--main-gray);
+    border-radius: 10px;
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dcbotting.com | Documentation</title>
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-177962596-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-177962596-1');
+	</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/docs.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Toni Isotalo">
+    <meta name="keywords" content="Discord, bot, platform, dcbotting">
+    <meta name="description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+    <meta name="robots" content="index">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Documentation for DcBotting">
+    <meta property="og:url" content="http://www.dcbotting.com/docs" />
+    <meta property="og:image" content="http://www.dcbotting.com/static/images/screenshot.png" />
+    <meta property="og:description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+    <header>
+        <a href="/"><h1>DCBOTTING</h1></a>
+        <button class="toggle" id="toggle">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+    </header>
+    <ul>
+        <li class="active introduction"><a href="#introduction">Introduction</a></li>
+        <li class="key"><a href="#key">Bot Token</a></li>
+        <li class="link"><a href="#link">Invitation link</a></li>
+        <li class="components"><a href="#components">Components</a></li>
+        <li class="objects"><a href="#objects">Data objects</a></li>
+        <li class="programming"><a href="#programming">Programming</a></li>
+        <li class="examples"><a href="#examples">Example projects</a></li>
+    </ul>
+</aside>
+<div class="viewer">
+    <section id="introduction">
+        <div class="content">
+            <h1>Introduction</h1>
+            <p>dcbotting.com is made by discord users to discord users.</p>
+            <p>The goal was to make the development of a discord bot as easier as possible. Therefore we converted the programming process to graphical components in order to build a whole discord bot based on them.</p>
+            <span></span>
+            <p>dcbotting is not affiliated with discord in any way.</p>
+            <div class="screenshot project"></div>
+            <h2>Environment</h2>
+            <p>Another great thing is the size of the environment.</p>
+            <p>Dcbotting doesn't require you to download or install anything. The entire bot is build by using javascript which runs in any modern web browser.</p>
+            <span></span>
+            <p>Once you add your own API Key, it starts hosting the bot in your own computer / browser. Therefore when you close the browser tab, the bot goes down aswell.</p>
+            <p>But you can always download your current project by clicking the download button in the header.</p>
+            <span></span>
+            <p>The data that each event and method includes can be found from the original <a target="__blank" href="https://discord.com/developers/docs/resources/channel">discord api documentation</a>.</p>
+            <p>Each component has a button that takes you to the documentation.</p>
+            <span></span>
+            <p>Every changes made to the project has to be submitted by pressing the submit button in the header</p>
+        </div>
+    </section>
+    <section id="key">
+        <div class="content">
+            <h1>Bot Token</h1>
+            <p>Bot token can be found from your <a href="https://discord.com/developers/applications" target="__blank">discord developer portal</a>.</p>
+            <p>Select one of your applications or create a new one from the top right</p>
+            <div class="screenshot key"></div>
+            <p>From the left sidebar go to the "Bot" section. Build-A-Bot section includes your bot token. The token acts like a password and should be kept as a secret</p>
+        </div>
+    </section>
+    <section id="link">
+        <div class="content">
+            <h1>Invitation link</h1>
+            <p>You will need this link in order to get your bot to join your guild / server.</p>
+            <p>The link can also be found from your <a href="https://discord.com/developers/applications" target="__blank">discord developer portal</a>.</p>
+            <div class="screenshot link"></div>
+            <p>Select your application / bot and go to the OAuth2 section from the left sidebar.</p>
+            <p>Make sure you select the "bot" scope. After that the link will appear.</p>
+            <span></span>
+            <h2>Permissions</h2>
+            <p>Your bot wont be able to execute some methods without having the corresponding permissions.</p>
+            <p>The lack of permissions will make your methods to fail and your bot to misfunction. So make sure you select the required permissions.</p>
+            <span></span>
+            <p>The editor will provide a "testing" invitation link in the console. This link has a permissions of a adminstrator and should only be used for development.</p>
+        </div>
+    </section>
+    <section id="components">
+        <div class="content">
+            <h1>Components</h1>
+            <p>Everything is a component. You can add new components from the left sidebar.</p>
+            <p>Every component returns some data. What data each returns can be found from the original <a target="__blank" href="https://discord.com/developers/docs/resources/channel">discord api documentation</a></p>
+            <p>Component includes a documentation button that takes you to the data object</p>
+            <div class="screenshot component"></div>
+            <h2>Expression inputs</h2>
+            <p>Components has a expression inputs which can be used to determinate when should the children components be executed.</p>
+            <p>The values <code>{content}</code> and <code>{[0].content}</code> equals the same because they are accessing the same property but in a different way. Therefore the expression returns <code>True</code> and the methods below will be executed.</p>
+            <p>You can add as many expressions you want</p>
+            <span></span>
+            <p>You can access the data objects returned by components by using curly braces just like in the image. More of this in the <a href="#objects">Data objects section</a></p>
+        </div>
+    </section>
+    <section id="objects">
+        <div class="content">
+            <h1>Data objects</h1>
+            <p>Data returned by events and methods are stored in an array.</p>
+            <p>The array is private for each event and stores only the data returned by its children methods.</p>
+            <div class="screenshot data"></div>
+            <p>In the above image you can see the index of a each data object in the event array.</p>
+            <p>The first <code>[0]</code> index is data returned by the event itself. Rest are objects returned by the executed methods.</p>
+            <span></span>
+            <p>The event array in the image would look something like this<p>
+            <pre>
+            [
+                {
+                    //Channel create event data
+                    id: "749627693783318589",
+                    name: "test",
+                    ...
+                },
+                {
+                    //data from modify guild method
+                },
+                {
+                    //data from create message method
+                }
+            ]</pre>
+            <h2>Accessing the array / objects</h2>
+            <p>You can get an access to the array by using curly braces <code>{}</code>.</p>
+            <div class="screenshot inputs"></div>
+            <p>Using the <code>[0]</code> index is mandatory. The inputs in the above image are accessing the same object in a different way.</p>
+        </div>
+    </section>
+    <section id="programming">
+        <div class="content">
+            <h1>Programming</h1>
+            <p>The bot is also customizable with javascript</p>
+            <p>You can add a javascript component as an event or method. Any data returned by the component will be appended into the event array.</p>
+            <span></span>
+            <p>The event array in javascript component is stored into <code>data</code> variable.</p>
+            <div class="screenshot javascript"></div>
+            <p>The above javascript component splits the <code>.content</code> returned by <code>Message Create</code> event and returns it.</p>
+            <p>If you would like to access it you would then have to use the index <code>[1]</code> and so on ...</p>
+        <div>
+    </section>
+    <section id="examples">
+        <div class="content">
+            <h1>Examples</h1>
+            <p>These examples will help you to get started</p>
+            <span></span>
+            <p>Check your bot invitation link permissions if something doesn't work</p>
+            <span></span>
+            <h2>Edit guild name</h2>
+            <p>This project has a command to edit the guild name with a chat message</p>
+            <p>Chat input: <code>!bot edit new_guild_name</code></p>
+            <a target='_blank' href="/download/DcBotting project 1.dc" class="download">
+                <div class="icon download-icon"></div>
+                <div>Download</div>
+            </a>
+            <span></span>
+            <h2>New channel creation</h2>
+            <p>Changes the name of the new channel created</p>
+            <a target='_blank' href="/download/DcBotting project 2.dc" class="download">
+                <div class="icon download-icon"></div>
+                <div>Download</div>
+            </a>
+        <div>
+    </section>
+</div>
+<script>
+let id = window.location.toString().split("#")
+if(id.length == 2) {
+    id = id[1];
+    $(".sidebar li").removeClass("active");
+    $(".sidebar li." + id).addClass("active");
+    $(".viewer").scrollTop($("section#" + id).offset().top);
+}
+$(".sidebar li").on("click", function() {
+    $(".sidebar li").removeClass("active");
+    $(this).addClass("active");
+});
+$(".viewer").on("scroll", function() {
+    const sections = $(this).find("section");
+    for(let a = 0; a < sections.length; a++) {
+        const section = sections[a];
+        if($(section).offset().top <= 100 && $(section).offset().top > -100) {
+            $(".sidebar li").removeClass("active");
+            const id = $(section).attr("id");
+            $(".sidebar li." + id).addClass("active");
+        }
+    }
+})
+$("#toggle").click(function() {
+    $("#sidebar").toggleClass("toggled");
+})
+</script>
+</body>
+<html>

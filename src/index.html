@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Welcome to DcBotting!</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177962596-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-177962596-1');
+    </script>
+    <script src="/static/js/particles.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="/static/css/index.css">
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Toni Isotalo">
+    <meta name="keywords" content="Discord, bot, platform, dcbotting">
+    <meta name="description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+    <meta name="robots" content="index">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Create free discord bot">
+    <meta property="og:url" content="http://www.dcbotting.com" />
+    <meta property="og:image" content="http://www.dcbotting.com/static/images/screenshot.png" />
+    <meta property="og:description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+</head>
+<body>
+<div id="particles"></div>
+<div class="content">
+    <header>
+        <img src="/static/images/logo-white.png" alt="Discord">
+        <h1>DcBotting</h1>
+    </header>
+    <h5>Bot building platform for discord</h5>
+    <h5>Build your own bot with graphical interface</h5>
+    <div class="buttons">
+        <a href="/editor">Editor</a>
+        <a href="/docs">Documentation</a>
+    </div>
+</div>
+<footer>
+    <a href="https://twitter.com/toni_isotalo" target="__blank"><img src="/static/images/twitter.png" alt="Twitter"></a>
+    <a href="https://www.fiverr.com/tonii18" target="__blank"><img src="/static/images/fiverr.png" alt="Fiverr"></a>
+    <p>Copyright &copy; <span id="year"></span>, DcBotting.com</p>
+</footer>
+<script>
+particlesJS("particles", {
+  "particles": {
+    "number": {
+      "value": 35,
+      "density": {
+        "enable": true,
+        "value_area": 800
+      }
+    },
+    "color": {
+      "value": "#40474C"
+    },
+    "size": {
+      "value": 20,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 40,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "shape": {
+        "type": "image",
+        "image": {
+            "src": "/static/images/logo-gray.png"
+        }
+    },
+    "line_linked": {
+      "enable": true,
+      "distance": 150,
+      "color": "#40474C",
+      "opacity": 0.4,
+      "width": 1
+    },
+    "move": {
+      "enable": true,
+      "speed": 2,
+      "direction": "none",
+      "random": false,
+      "straight": false,
+      "out_mode": "out",
+      "bounce": false,
+      "attract": {
+        "enable": false,
+        "rotateX": 600,
+        "rotateY": 1200
+      }
+    }
+  },
+  "retina_detect": true
+});
+document.getElementById("year").innerHTML = new Date().getFullYear()
+</script>
+</body>
+</html>

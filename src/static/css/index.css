@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+@font-face {
+    font-family: "Whitney-black";
+    src: url(../fonts/Whitney-Black.ttf)
+}
+@font-face {
+    font-family: "Whitney-medium";
+    src: url(../fonts/Whitney-Medium.ttf)
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    color: white;
+    position: relative;
+}
+:root {
+    --main-blue: #7289DA;
+    --main-white: #FFFFFF;
+    --main-gray: #99AAB5;
+    --main-dark: #2C2F33;
+    --main-black: #23272A;
+}
+
+html, body {
+    height: 100%;
+    background-color: var(--main-dark);
+    overflow: hidden;
+}
+
+#particles {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+}
+.content {
+    text-align: center;
+    height: calc(100% - 50px);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 10vw;
+}
+header {
+    align-items: center;
+    display: flex;
+}
+header img {
+    height: 70px;
+    width: 70px;
+}
+header h1 {
+    font-family: "Whitney-black";
+    font-size: 60px;
+}
+.content h5 {
+    font-family: "Whitney-black";
+    font-size: 20px;
+    line-height: 30px;
+}
+.buttons {
+    margin-top: 50px;
+}
+.buttons a {
+    background-color: var(--main-blue);
+    border: none;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 40px;
+    padding: 0 15px;
+    border-radius: 5px;
+    margin: 10px;
+    transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+}
+.buttons a:hover {
+    background-color: #536399;
+}
+
+footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+footer img {
+    height: 20px;
+    width: 20px;
+}
+footer > * {
+    margin: 0 10px;
+}

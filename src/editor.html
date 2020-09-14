@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DcBotting | Build your own discord bots</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-177962596-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-177962596-1');
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/app.css">
+
+    <meta name="author" content="Toni Isotalo">
+    <meta name="keywords" content="Discord, bot, platform, dcbotting">
+    <meta name="description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+    <meta name="robots" content="index">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Create free discord bot">
+    <meta property="og:url" content="http://www.dcbotting.com/editor" />
+    <meta property="og:image" content="http://www.dcbotting.com/static/images/screenshot.png" />
+    <meta property="og:description" content="DcBotting is a handy tool for creating discord bots. Easy to use and no programming experience required. Use a few visual components to build a fully functioning bot.">
+</head>
+<body>
+
+<div class="module" id="token-modal">
+    <div class="module-background"></div>
+    <div class="module-padding">
+        <div class="module-body">
+            <header>Bot Token</header>
+            <div class="module-content">
+                <p>You can find your token from your discord developer portal. <a target="__blank" href="/docs#key">Can't find it?</a></p>
+                <form id="token-form">
+                    <input type="text" placeholder="Bot Token" id="tokenInput">
+                    <input type="submit" value="Start building the bot">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<aside class="sidebar sidebar-left sidebar-nav">
+    <header for="events" class="selected"><h1>Events</h1></header>
+    <header for="methods"><h1>Methods</h1></header>
+    <ul class="component-list open" id="events">
+    </ul>
+    <ul class="component-list" id="methods">
+    </ul>
+</aside>
+
+<div class="builder">
+    <header id="header">
+        <div class="logo">
+            <img src="/static/images/logo-white.png">
+            <a href="/"><h1>DCBOTTING</h1></a>Beta
+        </div>
+        <div class="status">
+            <div class="status-ball" id="status"></div>
+            <div class="status-text" id="status-text"><h3>Offline</h3></div>
+        </div>
+        <div class="reconnect nav-item" id="reconnect">
+            <h3>Reconnect</h3>
+        </div>
+        <div class="download nav-item" id="download">
+            <h3>Download</h3>
+        </div>
+        <label class="upload nav-item" id="upload" for="upload-selector">
+            <h3>Upload</h3>
+            <input type="file" id="upload-selector" accept=".dc" hidden>
+        </label>
+        <div class="space"></div>
+        <div class="nav-item" id="submit"><h3 class="run-btn">Submit</h3></div>
+        <div class="console-btn nav-item" id="console-btn">
+            <h3>Console</h3>
+        </div>
+    </header>
+    <div class="project" id="projectWrapper">
+        <ul class="component-list" id="project"> 
+            <li class="no-components"><h1>No events added</h1></li>
+        </ul>
+    </div>
+    <div class="console open" id="console">
+        <header>
+            <span>Console</span>
+            <span id="close-console">Close</span>
+        </header>
+        <div class="console-content" id="console-content">
+        </div>
+    </div>
+</div>
+
+<aside class="sidebar">
+    <header><h1>Guilds</h1></header>
+    <ul class="component-list" id="servers">
+    </ul>
+</aside>
+<script src="/static/js/lib.js"></script>
+<script src="/static/js/bot.js"></script>
+</body>
+<html>

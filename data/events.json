@@ -1,0 +1,91 @@
+{
+    "javascript": {
+        "desc": "Execute javascript code, <a target='__blank' href='/docs#programming'>Documentation</a>",
+        "statements": false
+    },
+    "ready": {
+        "desc": "When the gateway handshake is completed and bot is online",
+        "statements": false,
+        "docs": "https://discord.com/developers/docs/topics/gateway#ready"
+    },
+    "channel_create": {
+        "desc": "New channel created",
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "channel_update": {
+        "desc": "Channel was updated",
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "channel_delete": {
+        "desc": "Channel was deleted",
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "guild_create": {
+        "desc": "Guild became available, or bot joined a new guild",
+        "docs": "https://discord.com/developers/docs/resources/guild#guild-object"
+    },
+    "guild_update": {
+        "desc": "Guild was updated",
+        "docs": "https://discord.com/developers/docs/resources/guild#guild-object"
+    },
+    "guild_deleted": {
+        "desc": "Guild became unavailable, or bot left/was removed from a guild",
+        "docs": "https://discord.com/developers/docs/resources/guild#unavailable-guild-object"
+    },
+    "guild_member_add": {
+        "desc": "New user joined a guild",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-member-add"
+    },
+    "guild_member_remove": {
+        "desc": "User was removed from a guild",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-member-remove"
+    },
+    "guild_role_create": {
+        "desc": "Guild role was created",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-role-create"
+    },
+    "guild_role_update": {
+        "desc": "guild role was updated",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-role-update"
+    },
+    "guild_role_delete": {
+        "desc": "guild role was deleted",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-role-delete"
+    },
+    "message_create": {
+        "desc": "Received when a message is created",
+        "docs": "https://discord.com/developers/docs/resources/channel#message-object"
+    },
+    "message_update": {
+        "desc": "Received when a message is updated",
+        "docs": "https://discord.com/developers/docs/resources/channel#message-object"
+    },
+    "message_delete": {
+        "desc": "Received when a message is deleted",
+        "docs": "https://discord.com/developers/docs/topics/gateway#message-delete"
+    },
+    "message_reaction_add": {
+        "desc": "User reacted to a message",
+        "docs": "https://discord.com/developers/docs/topics/gateway#message-reaction-add"
+    },
+    "message_reaction_remove": {
+        "desc": "User removed a reaction from a message",
+        "docs": "https://discord.com/developers/docs/topics/gateway#message-reaction-remove"
+    },
+    "presence_update": {
+        "desc": "User was updated",
+        "docs": "https://discord.com/developers/docs/topics/gateway#presence-update"
+    },
+    "typing_start": {
+        "desc": "User started typing in a channel",
+        "docs": "https://discord.com/developers/docs/topics/gateway#typing-start"
+    },
+    "voice_state_update": {
+        "desc": "Someone joined, left or moved a voice channel",
+        "docs": "https://discord.com/developers/docs/topics/gateway#voice-state-update"
+    },
+    "voice_server_update": {
+        "desc": "Guilds voice server was updated",
+        "docs": "https://discord.com/developers/docs/topics/gateway#voice-server-update"
+    }
+}

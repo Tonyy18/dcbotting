@@ -1,0 +1,446 @@
+{
+    "javascript": {
+        "desc": "Execute javascript code, <a target='__blank' href='/docs#programming'>Documentation</a>",
+        "properties": []
+    },
+    "get_channel": {
+        "desc": "Get a channel by ID",
+        "request": {
+            "type": "get",
+            "url": "/channels/{channel.id}"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "modify_channel": {
+        "desc": "Update a channel's settings",
+        "request": {
+            "type": "patch",
+            "url": "/channels/{channel.id}"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        },{
+            "field": "name",
+            "placeholder": "Channel Name (2 - 100 characters)",
+            "type": "string"
+        },{
+            "field": "topic",
+            "placeholder": "Channel Topic (0 - 1024 characters)",
+            "type": "string"
+        },{
+            "field": "nsfw",
+            "placeholder": "Whether the channel is nsfw",
+            "type": "boolean"
+        },{
+            "field": "parent_id",
+            "placeholder": "ID of parent category",
+            "type": "string"
+        }]
+        ,
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "delete_channel": {
+        "desc": "Delete channel. Cannot be undone",
+        "request": {
+            "type": "delete",
+            "url": "/channels/{channel.id}"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "get_channel_messages": {
+        "desc": "Returns the messages for a channel",
+        "request": {
+            "type": "get",
+            "url": "/channels/{channel.id}/messages"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#get-channel-messages"
+    },
+    "create_message": {
+        "desc": "Post a message to a guild text or DM channel",
+        "request": {
+            "type": "post",
+            "url": "/channels/{channel.id}/messages"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        },{
+            "field": "content",
+            "placeholder": "Text content",
+            "type": "string"
+        },
+        {
+            "field": "tts",
+            "placeholder": "Text To Speach",
+            "type": "boolean",
+            "default": false
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#message-object"
+    },
+    "edit_message": {
+        "desc": "Edit a previously sent message",
+        "request": {
+            "type": "patch",
+            "url": "/channels/{channel.id}/messages/{message.id}"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        }, {
+            "field": "message.id",
+            "placeholder": "Message ID",
+            "type": "string"
+        }, {
+            "field": "content",
+            "placeholder": "Content",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#message-object"
+    },
+    "delete_message": {
+        "desc": "Delete a message. If operating on a guild channel and trying to delete a message that was not sent by the current user, this endpoint requires the MANAGE_MESSAGES permission",
+        "request": {
+            "type": "delete",
+            "url": "/channels/{channel.id}/messages/{message.id}"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{[1].channel_id}"
+        },{
+            "field": "message.id",
+            "placeholder": "Message ID",
+            "type": "string",
+            "default": "{[1].id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#delete-message"
+    },
+    "get_pinned_messages": {
+        "desc": "Returns all pinned messages in the channel as an array of message objects",
+        "request": {
+            "type": "get",
+            "url": "/channels/{channel.id}/pins"
+        },
+        "properties": [{
+            "field": "channel.id",
+            "placeholder": "Channel ID",
+            "type": "string",
+            "default": "{channel_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#get-pinned-messages"
+    },
+    "get_guild": {
+        "desc": "Returns the guild object for the given id",
+        "request": {
+            "type": "get",
+            "url": "/guilds/{guild.id}?with_counts=true"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string",
+            "default": "{guild_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#guild-object"
+    },
+    "modify_guild": {
+        "desc": "Modify a guild's settings",
+        "request": {
+            "type": "patch",
+            "url": "/guilds/{guild.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string",
+            "default": "{guild_id}"
+        },
+        {
+            "field": "name",
+            "placeholder": "Guild name",
+            "type": "string"
+        },
+        {
+            "field": "verification_level",
+            "placeholder": "Verification level (integer)",
+            "type": "integer"
+        },
+        {
+            "field": "afk_channel_id",
+            "placeholder": "ID for afk channel",
+            "type": "string"
+        },
+        {
+            "field": "system_channel_id",
+            "placeholder": "The id of the channel where guild notices such as welcome messages and boost events are posted",
+            "type": "string"
+        },
+        {
+            "field": "rules_channel_id",
+            "placeholder": "the id of the channel where guilds display rules and/or guidelines",
+            "type": "string"
+        },
+        {
+            "field": "icon",
+            "placeholder": "Icon",
+            "type": "file"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#guild-object"
+    },
+    "get_guild_channels": {
+        "desc": "Returns a list of guild channels",
+        "request": {
+            "type": "get",
+            "url": "/guilds/{guild.id}/channels"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string",
+            "default": "{guild_id}"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#get-guild-channels"
+    },
+    "create_guild_channel": {
+        "desc": "Create a new channel object for the guild",
+        "request": {
+            "type": "post",
+            "url": "/guilds/{guild.id}/channels"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string",
+            "default": "{guild_id}"
+        },
+        {
+            "field": "name",
+            "placeholder": "Channel name (2-100 characters)",
+            "type": "string"
+        },
+        {
+            "field": "type",
+            "placeholder": "The type of channel (integer)",
+            "type": "integer"
+        },{
+            "field": "topic",
+            "placeholder": "Channel topic (0-1024 characters)",
+            "type": "string"
+        },
+        {
+            "field": "position",
+            "placeholder": "Sorting position of the channel",
+            "type": "integer"
+        },
+        {
+            "field": "nsfw",
+            "placeholder": "Whether the channel is nsfw",
+            "type": "boolean"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "list_guild_members": {
+        "desc": "Returns a list of guild members",
+        "request": {
+            "type": "get",
+            "url": "/guilds/{guild.id}/members"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#list-guild-members"
+    },
+    "add_guild_member_role": {
+        "desc": "Adds a role to a guild member",
+        "request": {
+            "type": "put",
+            "url": "/guilds/{guild.id}/members/{user.id}/roles/{role.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        },
+        {
+            "field": "user.id",
+            "placeholder": "User ID",
+            "type": "string"
+        }, 
+        {
+            "field": "role.id",
+            "placeholder": "Role ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#add-guild-member-role"
+    },
+    "remove_guild_member": {
+        "desc": "Remove a member from a guild",
+        "request": {
+            "type": "delete",
+            "url": "/guilds/{guild.id}/members/{user.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        },
+        {
+            "field": "user.id",
+            "placeholder": "User ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#remove-guild-member"
+    },
+    "create_guild_ban": {
+        "desc": "Create a guild ban",
+        "request": {
+            "type": "put",
+            "url": "/guilds/{guild.id}/bans/{user.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        }, 
+        {
+            "field": "user.id",
+            "placeholder": "User ID",
+            "type": "string"
+        }, 
+        {
+            "field": "delete_message_days",
+            "placeholder": "Number of days to delete messages for (0-7)",
+            "type": "integer"
+        }, 
+        {
+            "field": "reason",
+            "placeholder": "Reason for a ban",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#create-guild-ban"
+    },
+    "remove_guild_ban": {
+        "desc": "Remove the ban from user",
+        "request": {
+            "type": "delete",
+            "url": "/guilds/{guild.id}/bans/{user.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        }, 
+        {
+            "field": "user.id",
+            "placeholder": "User ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#remove-guild-ban"
+    },
+    "get_guild_roles": {
+        "desc": "Returns a list of roles for a guild",
+        "request": {
+            "type": "get",
+            "url": "/guilds/{guild.id}/roles"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/guild#get-guild-roles"
+    },
+    "get_user": {
+        "desc": "Returns a user object for a given user ID",
+        "request": {
+            "type": "get",
+            "url": "/users/{user.id}"
+        },
+        "properties": [{
+            "field": "user.id",
+            "placeholder": "User ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/user#user-object"
+    },
+    "modify_current_user": {
+        "desc": "Returns a user object for a given user ID",
+        "request": {
+            "type": "patch",
+            "url": "/users/@me"
+        },
+        "properties": [{
+            "field": "username",
+            "placeholder": "Username",
+            "type": "string"
+        },
+        {
+            "field": "avatar",
+            "placeholder": "Avatar",
+            "type": "file"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/user#user-object"
+    },
+    "leave_guild": {
+        "desc": "Leave a guild",
+        "request": {
+            "type": "delete",
+            "url": "/users/@me/guilds/{guild.id}"
+        },
+        "properties": [{
+            "field": "guild.id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/user#leave-guild"
+    },
+    "get_user_dms": {
+        "desc": "Returns a list of DM channels",
+        "request": {
+            "type": "get",
+            "url": "/users/@me/channels"
+        },
+        "docs": "https://discord.com/developers/docs/resources/user#get-user-dms"
+    },
+    "create_dm": {
+        "desc": "Create a new DM channel with a user",
+        "request": {
+            "type": "post",
+            "url": "/users/@me/channels"
+        },
+        "properties": [{
+            "field": "recipient_id",
+            "placeholder": "User ID",
+            "type": "string"
+        }],
+        "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    }
+}
