@@ -13,7 +13,7 @@ app.use(express.urlencoded({limit: dataLimit}))
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(function(req, res, next) {
+/* app.use(function(req, res, next) {
     //Redirect to https if not secured already
     if(req.headers.host.includes("www")) {
         res.set("location", "https://dcbotting.com" + req.url);
@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
         res.status(301);
         res.send()
     }
-})
+}) */
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/src/index.html")
@@ -112,7 +112,7 @@ httpServer.listen(80, () => {
 
 //Enable SSL
 
-const privateKey = fs.readFileSync("/etc/letsencrypt/live/dcbotting.com/privkey.pem");
+/* const privateKey = fs.readFileSync("/etc/letsencrypt/live/dcbotting.com/privkey.pem");
 const certificate = fs.readFileSync("/etc/letsencrypt/live/dcbotting.com/fullchain.pem");
 const credentials = {
     key: privateKey,
@@ -122,4 +122,4 @@ const httpsServer = https.createServer(credentials, app);
 httpsServer.listen(443, () => {
     console.log("Listening port 443 for SSL")
 })
-
+ */
