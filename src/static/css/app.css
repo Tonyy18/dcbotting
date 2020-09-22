@@ -327,12 +327,14 @@ textarea:focus {
 .sidebar-nav header {
     display: inline-block;
     width: 50%;
+}
+.sidebar-nav header h1 {
     color: var(--main-gray);
 }
-.sidebar-nav header.selected {
+.sidebar-nav header.selected h1 {
     color: white;
 }
-.sidebar-nav header:hover {
+.sidebar-nav header:hover h1 {
     color: white;
 }
 .sidebar-nav .component-list {
