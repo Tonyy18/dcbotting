@@ -20,7 +20,7 @@ const StatementOptions = {
     "first word equals": function(val1, val2) {
         return val1.split(" ")[0] == val2;
     },
-    "Exists": function(val1, val2) {
+    "exists": function(val1, val2) {
         return typeof val1 != "undefined"
     }
 }
@@ -116,7 +116,7 @@ project.download = function() {
 }
 
 //Display component dropdown
-$(".project").on("click", ".component-visual", function() {
+$(document).on("click", ".component-visual", function() {
     const parent = $(this).parent();
     if(parent.children(".component-dropdown").length == 0) return; //No childrens to display
 
@@ -144,7 +144,6 @@ function unsaved() {
 project.on("keydown", "input, textarea", function() {
     unsaved();
 })
-
 project.on("click", ".component .new-statement", function() {
     const parent = $(this).parent().children(".component-statements");
     const inputs = buildStatementInput()
@@ -154,7 +153,6 @@ project.on("click", ".component .delete-statement", function() {
     $(this).parent().remove();
     unsaved();
 })
-
 project.on("click", ".remove-btn", function() {
     const component = $(this).parent().parent(".component")
     if(project.selected != null && (component.attr("id") == project.selected.attr("id"))) {
@@ -683,7 +681,18 @@ $(document).click(function(e) {
 
 const servers = $("#servers");
 servers.add = function(server) {
-    const dom = $("<li class='component highlighted' id='" + server.id + "'><div class='component-visual'><span class='text'>" + server.name + "</span><span class='ghost'>Updated</span></div></li>").hide();
+    const dom = $("<li class='component highlighted' id='" + server.id + "'><div class='component-visual'><span class='text'>" + server.name + "</span><span class='icon arrow-down-icon'></span><span class='ghost'>Updated</span></div></li>");
+    
+    const dropdown = $("<div class='component-dropdown'></div>")
+
+    dropdown.append("<div class='static-value'><span>ID: </span><span data-value='id'>" + server["id"]+ "</span></div>");
+    dropdown.append("<div class='static-value'><span>Channels: </span><span data-value='channels'>" + server["channels"].length + "</span></div>")
+    dropdown.append("<div class='static-value'><span>Members: </span><span data-value='members'>" + server["member_count"] + "</span></div>")
+    dropdown.append("<div class='static-value'><span>Owner ID: </span><span data-value='owner'>" + server["owner_id"] + "</span></div>")
+    dropdown.append("<div class='static-value'><span>Region: </span><span data-value='region'>" + server["region"] + "</span></div>")
+
+    dom.append(dropdown);
+    dom.hide();
     servers.prepend(dom);
     dom.fadeIn()
     setTimeout(function() {
@@ -693,12 +702,18 @@ servers.add = function(server) {
 servers.update = function(server, content="Updated") {
     const dom = servers.find("#" + server.id);
     dom.find(".text").html(server.name);
+    console.log(server)
+    dom.find("[data-value='id']").html(server.id);
+    dom.find("[data-value='owner']").html(server.owner_id);
+    dom.find("[data-value='region']").html(server.region);
+
     dom.find(".ghost").text(content).fadeIn().animate({
         "top": "-20px",
         "opacity": "0"
     }, 1500, function() {
         dom.find(".ghost").html("");
-    });
+        dom.find(".ghost").attr("style", "")
+    })
 }
 servers.remove = function(data) {
     let id = null;
@@ -714,9 +729,7 @@ servers.remove = function(data) {
     }
 
     if(id != null && (typeof id == "string" || typeof id == "number")) {
-
         servers.find("#" + id).remove();
-
     }
 }
 

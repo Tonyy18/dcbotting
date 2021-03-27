@@ -52,6 +52,14 @@
         "desc": "guild role was deleted",
         "docs": "https://discord.com/developers/docs/topics/gateway#guild-role-delete"
     },
+    "guild_ban_add": {
+        "desc": "Sent when a user is banned from a guild",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-ban-add"
+    },
+    "guild_ban_remove": {
+        "desc": "Sent when a user is unbanned from a guild",
+        "docs": "https://discord.com/developers/docs/topics/gateway#guild-ban-remove"
+    },
     "message_create": {
         "desc": "Received when a message is created",
         "docs": "https://discord.com/developers/docs/resources/channel#message-object"

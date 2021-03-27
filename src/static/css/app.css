@@ -445,6 +445,15 @@ textarea:focus {
 .component .component-dropdown > a:hover {
     color: var(--main-blue);
 }
+.component .component-dropdown .static-value span {
+    display: inline-block;
+}
+.component .component-dropdown .static-value span:nth-child(2) {
+    float: right;
+}
+.component .component-dropdown .static-value:not(:last-child) {
+    padding-bottom: 10px;
+}
 .component h1 {
     font-size: 16px;
     padding: 10px 0;

@@ -442,5 +442,32 @@
             "type": "string"
         }],
         "docs": "https://discord.com/developers/docs/resources/channel#channel-object"
+    },
+    "update_voice_state": {
+        "desc": "join, move, or disconnect from a voice channel",
+        "request": {
+            "type": "gw",
+            "op": 4
+        },
+        "properties": [{
+            "field": "guild_id",
+            "placeholder": "Guild ID",
+            "type": "string"
+        },
+        {
+            "field": "channel_id",
+            "placeholder": "Channel ID",
+            "type": "string"
+        },
+        {
+            "field": "self_mute",
+            "placeholder": "Muted",
+            "type": "boolean"
+        },
+        {
+            "field": "self_deaf",
+            "placeholder": "Deaf",
+            "type": "boolean"
+        }]
     }
 }

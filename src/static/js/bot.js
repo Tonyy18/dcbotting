@@ -164,8 +164,16 @@ class Bot {
 
     exec(data, method) {
         method = methods[method]["request"];
-        let url = this.base + method["url"];
         const type = method["type"];
+        if(type == "undefined" || type == "gw") {
+            //Sent to the gateway (web socket)
+            this.send({
+                "op": method["op"],
+                "d": data
+            })
+            return {};
+        }
+        let url = this.base + method["url"];
         //Check if the property is in the url instead of body
         for(const key in data) {
             if(url.includes("{" + key + "}")) {
@@ -225,14 +233,15 @@ function init(token,) {
         bot.open = true
         Logger.log("Websocket connection established")
     }
-    bot.onerror = function() {
+    bot.onerror = function(event) {
         Logger.log("WebSocket error observed: " + event);
-        console.log(event)
     }
     bot.onclose = function(event) {
         const code = event.code;
         if(code >= 4000) {
             Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
+        } else {
+            Logger.error("Connection closed");
         }
     }
     
@@ -240,7 +249,6 @@ function init(token,) {
         const data = JSON.parse(event.data)
         
         const op = data["op"]
-        console.log(op);
         if("t" in data) bot.t = data["t"]
         if("s" in data) bot.s = data["s"]
         
@@ -331,8 +339,6 @@ function init(token,) {
     }, false)
     bot.on("guild_delete", function(data) {
         servers.remove(data);
-        console.log(data.id);
-        console.log(bot.guilds);
         if(data.id in bot.guilds) {
             delete bot.guilds[data.id];
         }
