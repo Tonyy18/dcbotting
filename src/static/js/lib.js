@@ -758,13 +758,28 @@ function modal(close = false) {
     tokenModal.classList.add("open");
 }
 
+function getUrlParam(param) {
+	try {
+		const url = window.location.href;
+		let split = url.split(param + "=");
+		return split[1].split("&")[0];
+	} catch(err){
+		return false;
+	}
+}
+
 function getToken(callback = null) {
+	const tokenParam = getUrlParam("token");
+	const tokenInput = document.getElementById("tokenInput");
+	if(tokenParam) {
+		tokenInput.value = tokenParam;
+	}
     modal()
     const tokenForm = document.getElementById("token-form")
     
     tokenForm.addEventListener("submit", function(e) {
         e.preventDefault();
-        const token = document.getElementById("tokenInput").value
+        const token = tokenInput.value
         if(token) {
             modal(true)
             if(callback) callback(token);

@@ -234,7 +234,7 @@ function init(token,) {
         Logger.log("Websocket connection established")
     }
     bot.onerror = function(event) {
-        Logger.log("WebSocket error observed: " + event);
+        Logger.error("WebSocket error observed: " + event);
     }
     bot.onclose = function(event) {
         const code = event.code;
