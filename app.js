@@ -116,7 +116,7 @@ try {
     })
 
     const httpsServer = https.createServer(credentials, app);
-    httpsServer.listen(9000, () => {
+    httpsServer.listen(443, () => {
         console.log("Listening port 443 for SSL")
     })
 } catch(e) {
@@ -124,7 +124,7 @@ try {
 }
 
 const httpServer = http.createServer(app);
-httpServer.listen(8000, () => {
+httpServer.listen(80, () => {
     console.log("Listening port 80")
 })
 
