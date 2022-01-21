@@ -124,7 +124,12 @@ try {
 }
 
 const httpServer = http.createServer(app);
-httpServer.listen(80, () => {
-    console.log("Listening port 80")
+let _port = process.argv.slice(2);
+let port = 80;
+if(_port.length > 0) {
+	port = parseInt(_port[0]);
+}
+httpServer.listen(port, () => {
+    console.log("Listening port " + 5000)
 })
 
