@@ -11,7 +11,7 @@ class Bot {
         this.gateway = null;
         this.user = {};
         this.guilds = {};
-
+        this.lastMessage = null;
         this.reconnected = 0;
 
         this.headers = {
@@ -221,11 +221,13 @@ class Bot {
 
 getToken(function(token) {
     setTimeout(function() {
+        window.history.replaceState(null, null, "?token=" + token);
         init(token)
     }, 1000);
 })
 
-function init(token,) {
+function init(token) {
+
     Logger.empty()
     bot = new Bot(token);
 
@@ -238,6 +240,7 @@ function init(token,) {
     }
     bot.onclose = function(event) {
         const code = event.code;
+        console.log(bot.lastMessage);
         if(code >= 4000) {
             Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
         } else {
@@ -247,7 +250,7 @@ function init(token,) {
     
     bot.onmessage = function(event) {
         const data = JSON.parse(event.data)
-        
+        bot.lastMessage = event;
         const op = data["op"]
         if("t" in data) bot.t = data["t"]
         if("s" in data) bot.s = data["s"]

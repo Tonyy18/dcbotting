@@ -130,6 +130,6 @@ if(_port.length > 0) {
 	port = parseInt(_port[0]);
 }
 httpServer.listen(port, () => {
-    console.log("Listening port " + 5000)
+    console.log("Listening port " + port)
 })
 

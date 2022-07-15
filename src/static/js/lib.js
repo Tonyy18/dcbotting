@@ -295,8 +295,6 @@ function executeStatements(parent, data) {
 }
 
 function submit() {
-    Logger.log("Project submitted to bot")
-    $("#submit").removeClass("unsaved");
     //Submits the project to bot
     const components = project.find(".component[data-type='event']");
 
@@ -374,6 +372,8 @@ function submit() {
         }
         
     }
+    Logger.log("Project submitted to bot")
+    $("#submit").removeClass("unsaved");
 }
 $("#submit").on("click", function() {
     if(!(bot.open)) {
