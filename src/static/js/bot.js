@@ -221,7 +221,12 @@ class Bot {
 
 getToken(function(token) {
     setTimeout(function() {
-        window.history.replaceState(null, null, "?token=" + token);
+        getBot(function(json, botParam) {
+            uploadJson(json)
+            window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
+        }, function() {
+            window.history.replaceState(null, null, "?token=" + token);
+        });
         init(token)
     }, 1000);
 })

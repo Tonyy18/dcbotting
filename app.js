@@ -6,7 +6,7 @@ const https = require("https");
 const http = require("http");
 const express = require("express")
 const app = express()
-
+const db = require("./db");
 const dataLimit = "50mb"
 app.use(express.json({limit: dataLimit}))
 app.use(express.urlencoded({limit: dataLimit}))
@@ -29,6 +29,13 @@ app.get("/sitemap", (req, res) => {
 
 app.get("/static/*", (req, res) => {
     res.sendFile(__dirname + "/src/" + req.originalUrl)
+})
+
+app.get("/api/bots/:id", (req, res) => {
+    const id = req.params.id;
+    db.query("SELECT * FROM bots WHERE id='" + id + "'", (result) => {
+        res.json(result[0])
+    })
 })
 
 app.get("/api/events", (req, res) => {

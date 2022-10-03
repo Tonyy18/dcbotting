@@ -41,6 +41,7 @@ project.addEvent = function(event) {
     dom.addClass("active");
     project.selected = dom;
     unsaved();
+    return dom
 }
 
 project.addMethod = function(methodName) {
@@ -55,6 +56,7 @@ project.addMethod = function(methodName) {
     project.selected.find(".component").removeClass("active");
     dom.addClass("active");
     unsaved();
+    return dom
 }
 project.error = function(target) {
 
@@ -76,43 +78,78 @@ project.error = function(target) {
     }, 10000) //ms
 
 }
-project.download = function() {
-    const inputs = project.find("input");
-    for(let a = 0; a < inputs.length; a++) {
-        const input = $(inputs[a]);
-        if(input.attr("type") == "checkbox") {
-            if(input.is(":checked")) {
-                input.attr("checked", true);
-            }
-            continue;
+function projectToJson() {
+    const data = {
+        "meta": {
+            "version": "1.0.0",
+            "created": new Date()
+        },
+        "data": {
+
         }
-        input.attr("value", input.val());
     }
-
-    const selects = project.find("select");
-    for(let a = 0; a < selects.length; a++) {
-        const select = $(selects[a]);
-        select.find("option[value='" + select.val() + "']").attr("selected", true);
+    const events = $("#project > .component");
+    if(events.length == 0) {
+        return;
     }
+    for(let a = 0; a < events.length; a++) {
+        const event = events[a];
+        const eventName = $(event).attr("data-name");
+        data["data"][eventName] = {"expressions":[],"methods": {}};
+        const inputRows = $(event).find("> .component-dropdown > .component-statements .input-row");
+        for(let b = 0; b < inputRows.length; b++) {
+            const inputRow = $(inputRows[b]);
+            const value1 = inputRow.find("[name='value1']").val();
+            const value2 = inputRow.find("[name='value2']").val();
+            const delimeter = inputRow.find("[name='delimeter']").val();
+            data["data"][eventName]["expressions"].push({
+                "value1": value1,
+                "delimeter": delimeter,
+                "value2": value2
+            })
+        }
+        const methods = $(event).find(".component-list > .component");
+        for(let b = 0; b < methods.length; b++) {
+            const method = $(methods[b]);
+            const methodName = method.attr("data-name");
+            data["data"][eventName]["methods"][methodName] = {"expressions":[], "inputs":{}}
+            const inputRows = $(method).find("> .component-dropdown > .component-statements .input-row");
+            for(let b = 0; b < inputRows.length; b++) {
+                const inputRow = $(inputRows[b]);
+                const value1 = inputRow.find("[name='value1']").val();
+                const value2 = inputRow.find("[name='value2']").val();
+                const delimeter = inputRow.find("[name='delimeter']").val();
+                data["data"][eventName]["methods"][methodName]["expressions"].push({
+                    "value1": value1,
+                    "delimeter": delimeter,
+                    "value2": value2
+                })
+            }
 
-    const textareas = project.find("textarea");
-    for(let a = 0; a < textareas.length; a++) {
-        $(textareas[a]).text($(textareas[a]).val());
+            const inputs = method.find(".component-inputs:not(.component-statements) input, .component-inputs:not(.component-statements) select, .component-inputs:not(.component-statements) textarea");
+            for(let c = 0; c < inputs.length; c++) {
+                const input = $(inputs[c]);
+                let value = input.val()
+                if(input.attr("type") == "checkbox") {
+                    value = input.is(":checked");
+                }
+                data["data"][eventName]["methods"][methodName]["inputs"][input.attr("name")] = value;
+            }
+        }
     }
+    return data;
+}
 
-    const html = project.html();
-    const a = document.createElement("a");
-    a.style.display = "none";
-    document.body.appendChild(a);
+project.download = function() {
+    const data = projectToJson();
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
+    element.setAttribute('download', "bot.dcbotting");
 
-    a.href = window.URL.createObjectURL(
-        new Blob([html], {type: "text/plain"})
-    );
-    a.setAttribute("download", "dcbotting.dc");
-    a.click()
-
-    window.URL.revokeObjectURL(a.href);
-    document.body.removeChild(a);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element)
 }
 
 //Display component dropdown
@@ -205,12 +242,44 @@ $("#reconnect").on("click", function() {
 $("#download").on("click", function() {
     project.download();
 })
+function uploadJson(json) {
+    const data = json["data"];
+    $("#project").find(".component").remove();
+    for(event in data) {
+        const eventDom = project.addEvent(event);
+        eventDom.find(".component-statements .input-row").remove();
+        for(let a = 0; a < data[event]["expressions"].length; a++) {
+            const statementInput = buildStatementInput(data[event]["expressions"][a]);
+            eventDom.find(".component-statements").prepend(statementInput);
+        }
+        project.selected = $(eventDom);
+        for(method in data[event]["methods"]) {
+            const methodDom = project.addMethod(method)
+            for(let a = 0; a < data[event]["methods"][method]["expressions"].length; a++) {
+                const statementInput = buildStatementInput(data[event]["methods"][method]["expressions"][a]);
+                methodDom.find(".component-statements").prepend(statementInput);
+            }
+            const inputs = methodDom.find(".component-inputs:not(.component-statements) input, .component-inputs:not(.component-statements) select, .component-inputs:not(.component-statements) textarea")
+            const values = data[event]["methods"][method]["inputs"]
+            for(let a = 0; a < inputs.length; a++) {
+                const input = $(inputs[a]);
+                if(input.attr("type") == "checkbox") {
+                    input.prop("checked", values[input.attr("name")])
+                    continue
+                }
+                input.val(values[input.attr("name")])
+            }
+        }
+    }
+    $("#project .active").removeClass("active")
+}
 $("#upload-selector").on("change", function(e) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
-        project.html(event.target.result);
         unsaved();
+        const data = JSON.parse(event.currentTarget.result);
+        uploadJson(data);
     });
     reader.readAsText(file, "UTF-8");
 })
@@ -501,15 +570,21 @@ function buildCheckbox(value, placeholder, name = "") {
     return dom;
 }
 
-function buildStatementInput() {
+function buildStatementInput(values = null) {
     const select = $("<select name='delimeter'></select>");
     for(key in StatementOptions) {
         select.append("<option value='" + key + "'>" + key + "</option>");
     }
-    return $('<div class="input-row"><div class="input"><input type="text" placeholder="value" name="value1"></div>' + select.prop('outerHTML') + '<div class="input"><input type="text" placeholder="value" name="value2"></div><div class="icon delete-icon delete-statement"></div></div>')
+    const dom = $('<div class="input-row"><div class="input"><input type="text" placeholder="value" name="value1"></div>' + select.prop('outerHTML') + '<div class="input"><input type="text" placeholder="value" name="value2"></div><div class="icon delete-icon delete-statement"></div></div>');
+    if(values != null) {
+        for(key in values) {
+            dom.find("[name='" + key + "']").val(values[key]);
+        }
+    }
+    return dom;
 }
 
-function buildStatementDom(inputs = true) {
+function buildStatementDom(inputs = true, count = 1) {
     const select = $("<select name='delimeter'></select>");
     for(key in StatementOptions) {
         select.append("<option value='" + key + "'>" + key + "</option>");
@@ -517,13 +592,15 @@ function buildStatementDom(inputs = true) {
 
     const statements = $('<div class="component-inputs component-statements"></div>')
     if(inputs) {
-        statements.append(buildStatementInput())
+        for(let a = 0; a < count; a++) {
+            statements.append(buildStatementInput())
+        }
     }
     statements.append('<div class="new-statement">Add expression</div>');
     return statements;
 }
 
-function buildEventDom(event) {
+function buildEventDom(event, statements=true, values=null) {
     
     const id = getRandom()
     let dom = $("<li class='component' id='" + id + "' data-type='event' data-name=" + event + "></li>");
@@ -551,6 +628,9 @@ function buildEventDom(event) {
         dropdown.append("<ul class='component-list'><li class='no-components'>No methods added</li></ul>");
     }
     dom.append(dropdown)
+    dom.appendMethod = function(dom) {
+        
+    }
     return dom
 }
 
@@ -603,7 +683,7 @@ function propertiesToDom(properties) {
     return dom;
 }
 
-function buildMethodDom(name) {
+function buildMethodDom(name, values=null) {
 
     if(!(name in methods)) return;
 
@@ -768,13 +848,34 @@ function getUrlParam(param) {
 	}
 }
 
+function getBot(callback = null, error = null) {
+    const botParam = getUrlParam("bot");
+    if(botParam) {
+        $.ajax({
+            type: "GET",
+            url: "/api/bots/" + botParam,
+            success: function(result) {
+                callback(JSON.parse(result["data"]), botParam)
+            },
+            error: function(result) {
+                if(error && typeof error == "function") {
+                    error(result)
+                }
+            }
+        })
+    }
+}
+
 function getToken(callback = null) {
 	const tokenParam = getUrlParam("token");
 	const tokenInput = document.getElementById("tokenInput");
 	if(tokenParam) {
 		tokenInput.value = tokenParam;
+        callback(tokenParam)
 	}
-    modal()
+    if(!tokenParam) {
+        modal()
+    }
     const tokenForm = document.getElementById("token-form")
     
     tokenForm.addEventListener("submit", function(e) {
