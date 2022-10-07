@@ -863,6 +863,8 @@ function getBot(callback = null, error = null) {
                 }
             }
         })
+    } else {
+        error(null)
     }
 }
 
@@ -872,6 +874,7 @@ function getToken(callback = null) {
 	if(tokenParam) {
 		tokenInput.value = tokenParam;
         callback(tokenParam)
+        return;
 	}
     if(!tokenParam) {
         modal()
