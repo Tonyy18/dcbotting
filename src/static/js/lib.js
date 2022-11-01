@@ -28,6 +28,7 @@ const StatementOptions = {
 // ---------------- PROJECT ----------------
 
 const project = $("#project"); //Component list
+project.notice = new Notice("#project-notice");
 const projectWrapper = document.getElementById("projectWrapper")
 project.addEvent = function(event) {
     const found = project.find(".component[data-name='" + event + "']")
@@ -43,6 +44,7 @@ project.addEvent = function(event) {
     unsaved();
     return dom
 }
+
 
 project.addMethod = function(methodName) {
     //Add a method to selected event
@@ -181,6 +183,9 @@ function unsaved() {
 project.on("keydown", "input, textarea", function() {
     unsaved();
 })
+project.on("change", "select", function() {
+    unsaved();
+})
 project.on("click", ".component .new-statement", function() {
     const parent = $(this).parent().children(".component-statements");
     const inputs = buildStatementInput()
@@ -271,9 +276,10 @@ function uploadJson(json) {
             }
         }
     }
+    window.history.replaceState(null, null, "?token=" + getUrlParam("token"));
     $("#project .active").removeClass("active")
 }
-$("#upload-selector").on("change", function(e) {
+$("#upload-selector").on("change", function(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
@@ -282,6 +288,16 @@ $("#upload-selector").on("change", function(e) {
         uploadJson(data);
     });
     reader.readAsText(file, "UTF-8");
+})
+$("#invite-btn").click(function() {
+    if(bot != null && bot.ready) {
+        const open = confirm("CAUTION! The following invite is made using administrator permissions, check console for more info")
+        if(open) {
+            window.open(bot.getInviteLink(), "_blank");
+        }
+    } else {
+        alert("Bot is not online and client id is not yet retrieved");
+    }
 })
 
 function replaceData(string, data, component=null) {
@@ -442,6 +458,7 @@ function submit() {
         
     }
     Logger.log("Project submitted to bot")
+    project.notice.show("Project submitted to bot");
     $("#submit").removeClass("unsaved");
 }
 $("#submit").on("click", function() {
@@ -817,8 +834,30 @@ servers.remove = function(data) {
 
 const header = document.getElementById("header")
 
-function modal(close = false) {
-    const tokenModal = document.getElementById("token-modal")
+function showModal(id, closable = true) {
+    const modal = $("#" + id);
+    modal.fadeIn();
+    modal.addClass("open");
+    if(closable) {
+        modal.children(".module-background").on("click", function() {
+            closeModal(id);
+        })
+        modal.find("[data-changeto]").off("click").on("click", function() {
+            closeModal(id);
+            showModal($(this).attr("data-changeTo"));
+        })
+    } else {
+        modal.children(".module-background").off("click")
+    }
+}
+
+function closeModal(id) {
+    const modal = $("#" + id);
+    modal.removeClass("open")
+    modal.fadeOut();
+}
+
+function tokenModal(close = false) {
     const input = document.getElementById("tokenInput")
 
     //If token exists in local storate
@@ -828,14 +867,10 @@ function modal(close = false) {
     }
 
     if(close) {
-        setTimeout(function() {
-            tokenModal.style.display = "none";
-        }, 1100);
-        tokenModal.classList.remove("open")
+        closeModal("token-modal")
         return;
     }
-    tokenModal.style.display = "block"
-    tokenModal.classList.add("open");
+    showModal("token-modal", false)
 }
 
 function getUrlParam(param) {
@@ -855,9 +890,13 @@ function getBot(callback = null, error = null) {
             type: "GET",
             url: "/api/bots/" + botParam,
             success: function(result) {
+                project.notice.show(result["name"] + " loaded")
                 callback(JSON.parse(result["data"]), botParam)
             },
             error: function(result) {
+                if(result.status == 404) {
+                    project.notice.show("Bot was not found")
+                }
                 if(error && typeof error == "function") {
                     error(result)
                 }
@@ -877,7 +916,7 @@ function getToken(callback = null) {
         return;
 	}
     if(!tokenParam) {
-        modal()
+        tokenModal()
     }
     const tokenForm = document.getElementById("token-form")
     
@@ -885,7 +924,7 @@ function getToken(callback = null) {
         e.preventDefault();
         const token = tokenInput.value
         if(token) {
-            modal(true)
+            tokenModal(true)
             if(callback) callback(token);
             localStorage.setItem("token", token);
         }
@@ -980,4 +1019,40 @@ function inviteLink(client) {
 
 function getRandom() {
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+}
+$("[data-modal]").click(function() {
+    showModal($(this).attr("data-modal"))
+})
+
+function getJwt() {
+    const jwt = localStorage.getItem("jwt");
+    if(jwt != null && (jwt && jwt != "")) {
+        return jwt
+    }
+    return false;
+}
+$("#save-btn").click(function() {
+    const jwt = getJwt();
+    if(!jwt) {
+        showModal("login-modal");
+        return;
+    }
+})
+
+function authRequest(url, type, data, callback) {
+    console.log(getJwt());
+    $.ajax({
+        url: url,
+        type: type,
+        data: data,
+        headers: {
+            "authorization": "bearer " + getJwt()
+        },
+        success: function() {
+            callback(true)
+        },
+        error: function() {
+            callback(false)
+        }
+    })
 }

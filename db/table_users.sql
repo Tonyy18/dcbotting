@@ -1,8 +1,8 @@
-CREATE TABLE bots (
+CREATE TABLE users (
     id int NOT NULL AUTO_INCREMENT,
     name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
     picture TEXT NULL,
-    data TEXT NOT NULL,
-    public int DEFAULT 1 NOT NULL,
     PRIMARY KEY (id)
 );

@@ -14,7 +14,10 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
+    <script src="/static/js/common.js"></script>
+
     <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
     <link rel="stylesheet" type="text/css" href="/static/css/app.css">
 
     <meta name="author" content="Toni Isotalo">
@@ -29,11 +32,11 @@
 </head>
 <body>
 
-<div class="module" id="token-modal">
+<div class="module module-600" id="token-modal">
     <div class="module-background"></div>
     <div class="module-padding">
         <div class="module-body">
-            <header>Bot Token</header>
+            <header class="header-small">Bot Token</header>
             <div class="module-content">
                 <p>You can find your token from your discord developer portal. <a target="__blank" href="/docs#key">Can't find it?</a></p>
                 <form id="token-form">
@@ -44,6 +47,50 @@
         </div>
     </div>
 </div>
+
+<div class="module module-350" id="login-modal">
+    <div class="module-background"></div>
+    <div class="module-padding">
+        <div class="module-body">
+            <header class="header-big">Login</header>
+            <div class="module-content">
+                <form id="login-form">
+                    <p class="main-error"></p>
+                    <input type="text" placeholder="Email" name="email">
+                    <input type="password" placeholder="Password" name="password">
+                    <input type="submit" value="Login">
+                </form>
+                <div class="module-footer">
+                    <p>Don't have an account?</p>
+                    <span data-changeTo="register-modal">Register here</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="module module-350" id="register-modal">
+    <div class="module-background"></div>
+    <div class="module-padding">
+        <div class="module-body">
+            <header class="header-big">Register</header>
+            <div class="module-content">
+                <form id="register-form">
+                    <p class="main-error"></p>
+                    <input type="text" placeholder="Username" name="username">
+                    <input type="text" placeholder="Email" name="email">
+                    <input type="password" placeholder="Password" name="password">
+                    <input type="password" placeholder="Password again" name="password2">
+                    <input type="submit" value="Register">
+                </form>
+                <div class="module-footer">
+                    <p>Already have an account?</p>
+                    <span data-changeTo="login-modal">Login here</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <aside class="sidebar sidebar-left sidebar-nav">
     <header for="events" class="selected"><h1>Events</h1></header>
@@ -67,6 +114,9 @@
         <div class="reconnect nav-item" id="reconnect">
             <h3>Reconnect</h3>
         </div>
+        <div class="nav-item" id="invite-btn">
+            <h3>Invite</h3>
+        </div>
         <div class="download nav-item" id="download">
             <h3>Download</h3>
         </div>
@@ -75,12 +125,18 @@
             <input type="file" id="upload-selector" accept=".dcbotting" hidden>
         </label>
         <div class="space"></div>
+        <div class="nav-item" id="save-btn"><h3>Save</h3></div>
         <div class="nav-item" id="submit"><h3 class="run-btn">Submit</h3></div>
         <div class="console-btn nav-item" id="console-btn">
             <h3>Console</h3>
         </div>
     </header>
     <div class="project" id="projectWrapper">
+        <div class="notice" id="project-notice">
+            <p>
+                Bot was not found
+            </p>
+        </div>
         <ul class="component-list" id="project"> 
             <li class="no-components"><h1>No events added</h1></li>
         </ul>
@@ -95,12 +151,26 @@
     </div>
 </div>
 
-<aside class="sidebar">
+<aside class="sidebar guild-sidebar">
     <header><h1>Guilds</h1></header>
     <ul class="component-list" id="servers">
     </ul>
+    <div class="bottom-buttons double" id="form-buttons">
+        <div class="login-button" data-modal="login-modal">
+            Login
+        </div>
+        <div class="register-button" data-modal="register-modal">
+            Register
+        </div>
+    </div>
+    <div class="bottom-buttons single" id="logout-buttons" style="display: none;">
+        <div id="logout-btn">
+            Logout
+        </div>
+    </div>
 </aside>
 <script src="/static/js/lib.js"></script>
 <script src="/static/js/bot.js"></script>
+<script src="/static/js/editorForms.js"></script>
 </body>
 <html>

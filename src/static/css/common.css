@@ -1,0 +1,63 @@
+input[type=text].input,
+input[type=password].input {
+    width: 100%;
+    margin-bottom: 10px;
+    line-height: 40px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background-color: #292C30;
+    border: 1px solid var(--main-black);
+    outline: none;
+}
+input[type=text].input:hover,
+input[type=password].input:hover,
+input[type=text].input:focus,
+input[type=password].input:focus {
+    border: 1px solid white;
+}
+input[type=submit] {
+    width: 100%;
+    margin-top: 10px;
+}
+.btn {
+    border: 1px solid transparent;
+    display: inline-block;
+    text-decoration: none;
+    line-height: 40px;
+    padding: 0 15px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    cursor: pointer;
+}
+.btn.btn-default {
+    background-color: var(--main-blue);
+}
+.btn.btn-default:hover {
+    background-color: #536399;
+}
+.btn.btn-white {
+    color: black;
+    background-color: white;
+}
+.btn.btn-white:hover {
+    border: 1px solid white;
+    color: white;
+    background-color: transparent;
+}
+
+.notice {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--notice-color);
+    padding: 20px;
+    border-radius: 3px;
+    display: none;
+}
+.notice p {
+    color: white;
+    font-size: 15px;
+}

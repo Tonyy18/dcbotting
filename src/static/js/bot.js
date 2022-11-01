@@ -13,6 +13,7 @@ class Bot {
         this.guilds = {};
         this.lastMessage = null;
         this.reconnected = 0;
+        this.ready = false;
 
         this.headers = {
             "Authorization": "Bot " + this.token
@@ -25,9 +26,15 @@ class Bot {
 
         this.events = {}
         this.submitted = {}
+        this.inviteLink = null;
 
     }
-
+    setInviteLink(link) {
+        this.inviteLink = link;
+    }
+    getInviteLink() {
+        return this.inviteLink;
+    }
     on(eventName, callback, submission = true) {
         if(!eventName || !callback) {
             return
@@ -326,15 +333,17 @@ function init(token) {
     }   
     
     bot.on("ready", function(data) {
+        bot.ready = true;
         bot.reconnected = 0;
         bot.sessionId = data["session_id"]
         const clientId = data["user"]["id"];
         bot.user = data.user;
         const link = inviteLink(clientId);
+        bot.setInviteLink(link);
         status("online");
         bot.log(data.user.username + " is now online")
         Logger.log("The following invitation link is with administrator permissions and for testing only. Generate a new link for public sharing from the discord developer portal. <a target='__blank' href='https://discord.com/developers/applications/" + clientId + "/oauth2'>Developer portal</a>");
-        bot.log("Invitation link for testing: <a href='https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&permissions=8&scope=bot' target='__blank'>https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&permissions=8&scope=bot</a>");
+        bot.log("Invitation link for testing: <a href='" + bot.getInviteLink() + "' target='__blank'>https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&permissions=8&scope=bot</a>");
     }, false)
     bot.on("guild_create", function(data) {
         if(data.id in bot.guilds) return;

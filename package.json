@@ -11,10 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "handlebars": "^4.7.6",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "request": "^2.88.2"
   },

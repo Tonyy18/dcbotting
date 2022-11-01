@@ -25,6 +25,7 @@
     --main-gray: #99AAB5;
     --main-dark: #2C2F33;
     --main-black: #23272A;
+    --notice-color: #273649;
 }
 
 html, body {
@@ -72,6 +73,7 @@ h1,
     display: inline-block;
 }
 input[type="text"],
+input[type="password"],
 input[type="number"],
 select {
     background-color: var(--main-black);
@@ -113,6 +115,8 @@ input[type=text]:hover,
 input[type=text]:focus,
 input[type=number]:hover,
 input[type=number]:focus,
+input[type=password]:hover,
+input[type=password]:focus
 textarea:hover,
 textarea:focus {
     border: 1px solid #7289DA;
@@ -126,9 +130,6 @@ textarea:focus {
     z-index: 1000;
 }
 
-.module.open .module-background {
-    opacity: 1;
-}
 .module.open .module-padding {
     top: 100px;
 }
@@ -137,16 +138,21 @@ textarea:focus {
     width: 100%;
     background-color: rgba(0,0,0,0.4);
     backdrop-filter: blur(2px);
-    opacity: 0;
     transition: opacity 1s;
 }
 .module .module-padding {
     padding: 10px;
     position: absolute;
-    left: calc(50% - 300px);
     top: -500px;
     transition: top 0.5s;
+}
+.module.module-600 .module-padding {
     width: 600px;
+    left: calc(50% - 300px);
+}
+.module.module-350 .module-padding {
+    width: 350px;
+    left: calc(50% - 350px / 2);
 }
 .module .module-body {
     background-color: var(--main-dark);
@@ -154,11 +160,15 @@ textarea:focus {
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 
-.module .module-body header {
+.module .module-body header.header-small {
     padding: 30px;
     font-size: 16px;
 }
-
+.module .module-body header.header-big {
+    padding: 30px;
+    text-align: center;
+    font-size: 25px;
+}
 .module .module-body .module-content {
     padding: 30px;
     padding-top: 0px;
@@ -168,8 +178,12 @@ textarea:focus {
 }
 .module input {
     width: 100%;
+    margin-bottom: 10px;
 }
-
+.module .main-error {
+    text-align: center;
+    display: none;
+}
 .module input[type=submit] {
     margin-top: 10px;
     transition: background-color 0.3s;
@@ -180,7 +194,19 @@ textarea:focus {
 .module input[type=submit]:hover {
     background-color: #536399;
 }
-
+.module .module-footer {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+.module .module-footer p {
+    margin-bottom: 0px !important;
+    flex-grow: 1;
+}
+.module .module-footer span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
 .builder {
     width: calc(100% - 600px) /* Minus two sidebars */
 }
@@ -347,8 +373,35 @@ textarea:focus {
 .sidebar-nav .component-list.open {
     display: block;
 }
-
-
+.guild-sidebar .component-list {
+    height: calc(100% - 51px - 72px);
+}
+.sidebar .bottom-buttons {
+    display: flex;
+}
+.sidebar .bottom-buttons > * {
+    text-align: center;
+    font-size: 20px;
+    border-top: 1px solid #23272A;
+    line-height: 50px;
+    cursor: pointer;
+}
+.sidebar .bottom-buttons.triple > * {
+    width: 33.33333333%;
+}
+.sidebar .bottom-buttons.double > *  {
+    width: 50%;
+}
+.sidebar .bottom-buttons.single > *  {
+    width: 100%;
+}
+.sidebar .bottom-buttons div:not(:last-child) {
+    border-right: 1px solid #23272A;
+}
+.sidebar .bottom-buttons > div:hover {
+    background-color: white;
+    color: black;
+}
 /* ------- COMPONENT -------*/
 
 

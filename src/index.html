@@ -11,8 +11,10 @@
 
       gtag('config', 'UA-177962596-1');
     </script>
+	<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="/static/js/particles.min.js"></script>
 
+	<link type="text/css" rel="stylesheet" href="/static/css/common.css">
     <link type="text/css" rel="stylesheet" href="/static/css/index.css">
     <link rel="icon" type="image/png" href="/static/images/favicon.ico"/>
 
@@ -37,16 +39,38 @@
     <h5>Bot building platform for discord</h5>
     <h5>Build your own bot with graphical interface</h5>
     <div class="buttons">
-        <a href="/editor">Editor</a>
-        <a href="/docs">Documentation</a>
+        <a href="/editor" class="btn btn-default">Editor</a>
+        <a href="/docs" class="btn btn-default">Documentation</a>
     </div>
 </div>
 <footer>
     <a href="https://twitter.com/toni_isotalo" target="__blank"><img src="/static/images/twitter.png" alt="Twitter"></a>
     <a href="https://www.fiverr.com/tonii18" target="__blank"><img src="/static/images/fiverr.png" alt="Fiverr"></a>
-    <p>Copyright &copy; <span id="year"></span>, DcBotting.com</p>
+    <p>Copyright &copy; <span id="year"></span>, DcBotting.com. This site is not affiliated with Discord in anyway</p>
 </footer>
 <script>
+function openModal(id) {
+	$("#" + id).fadeIn().addClass("modal-open").children(".modal-padding").animate({
+		"top": "15vh"
+	}, 500)
+}
+$(".modal-background").click(function() {
+	const id = $(this).parent().attr("id")
+	closeModal(id)
+})
+function closeAllModals() {
+	$(".modal-open").removeClass("modal-open").fadeOut().children(".modal-padding").animate({
+		"top": "-500px"
+	});
+}
+function closeModal(id) {
+	$("#" + id).removeClass("modal-open").fadeOut().children(".modal-padding").animate({
+		"top": "-500px"
+	});
+}
+$(".open-login").click(function() {
+	openModal("login-modal")
+})
 particlesJS("particles", {
   "particles": {
     "number": {

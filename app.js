@@ -1,7 +1,6 @@
 const axios = require("axios")
 
 const fs = require("fs");
-
 const https = require("https");
 const http = require("http");
 const express = require("express")
@@ -10,9 +9,9 @@ const db = require("./db");
 const dataLimit = "50mb"
 app.use(express.json({limit: dataLimit}))
 app.use(express.urlencoded({limit: dataLimit}))
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
 
+const auth = require("./auth");
+const api = require("./api")
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/src/index.html")
@@ -31,22 +30,9 @@ app.get("/static/*", (req, res) => {
     res.sendFile(__dirname + "/src/" + req.originalUrl)
 })
 
-app.get("/api/bots/:id", (req, res) => {
-    const id = req.params.id;
-    db.query("SELECT * FROM bots WHERE id='" + id + "'", (result) => {
-        res.json(result[0])
-    })
-})
+app.use("/api", api.router);
+app.use("/auth", auth.router);
 
-app.get("/api/events", (req, res) => {
-    res.set("content-type", "application/json")
-    res.sendFile(__dirname + "/data/events.json")
-})
-
-app.get("/api/methods", (req, res) => {
-    res.set("content-type", "application/json")
-    res.sendFile(__dirname + "/data/methods.json")
-})
 app.post("/router", async (req, res) => {
     const url = req.body.url;
     const data = JSON.parse(req.body.data);
@@ -129,6 +115,11 @@ try {
 } catch(e) {
     console.log("SSL is not enabled: " + e)
 }
+
+app.use(auth.jwt_middleware);
+app.post("/ping", function(req, res) {
+    res.sendStatus(200)
+})
 
 const httpServer = http.createServer(app);
 let _port = process.argv.slice(2);

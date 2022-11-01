@@ -67,24 +67,10 @@ header h1 {
 .buttons {
     margin-top: 50px;
 }
-.buttons a {
-    background-color: var(--main-blue);
-    border: none;
-    display: inline-block;
-    text-decoration: none;
-    line-height: 40px;
-    padding: 0 15px;
-    border-radius: 5px;
-    margin: 10px;
-    transition: background-color 0.3s;
-    -webkit-transition: background-color 0.3s;
-    -o-transition: background-color 0.3s;
-    -moz-transition: background-color 0.3s;
-}
-.buttons a:hover {
-    background-color: #536399;
-}
 
+.buttons .btn {
+    margin: 10px;
+}
 footer {
     height: 50px;
     display: flex;
