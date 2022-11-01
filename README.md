@@ -12,6 +12,11 @@
     NodeJs
     <ul>
       <li>Express</li>
+      <li>MySQL</li>
+      <li>REST</li>
     </ul>
   </li>
+  <li>JWT authentication</li>
+  <li>Discord API integration</li>
+  <li>Web sockets</li>
 </ul>
