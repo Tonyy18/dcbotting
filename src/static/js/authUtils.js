@@ -103,6 +103,7 @@ $("#register-form").on("submit", function(e) {
 function setLoggedInUI() {
     $("#form-buttons").hide();
     $("#logout-buttons").show();
+    project.notice.show("Successfully logged in");
 }
 
 

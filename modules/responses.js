@@ -4,7 +4,7 @@ const create_response = (res, code, content) => {
     res.status(code)
     res.json({
         code: code,
-        data: content
+        message: content
     })
     return res;
 }

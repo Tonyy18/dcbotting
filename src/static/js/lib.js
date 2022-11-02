@@ -1040,7 +1040,6 @@ $("#save-btn").click(function() {
 })
 
 function authRequest(url, type, data, callback) {
-    console.log(getJwt());
     $.ajax({
         url: url,
         type: type,
