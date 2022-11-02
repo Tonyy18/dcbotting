@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const db = require("./db")
 require("dotenv").config();
 const express = require("express");
+const common = require("./common");
+const responses = require("./responses");
 const router = express.Router();
 const get_jwt = (payload) => {
     //jwt.sign(payload, process.env.JWT_KEY, {expiresIn: "10000"});
@@ -22,20 +24,12 @@ const jwt_middleware = (req, res, next) => {
     //Before any secured api method
     let auth = req.get("authorization")
     if(!auth) {
-        res.status(401);
-        res.json({
-            "status": 401,
-            "message": "Unauthorized"
-        })
+        responses.unauthorized(res);
         return;
     }
     auth = auth.split(" ")
     if(auth.length != 2 || auth[0].toLowerCase() != "bearer") {
-        res.status(401);
-        res.json({
-            "status": 401,
-            "message": "Unauthorized"
-        })
+        responses.unauthorized(res);
         return;
     }
     auth = auth[1]
@@ -43,23 +37,11 @@ const jwt_middleware = (req, res, next) => {
         req.payload = payload;
         next();
     }, (error) => {
-        res.status(401);
-        res.json({
-            "status": 401,
-            "message": "Unauthorized"
-        })
+        responses.unauthorized(res);
         return;
     })
 };
 exports.jwt_middleware = jwt_middleware;
-
-function validateEmail(email) {
-    return String(email)
-                .toLowerCase()
-                .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                );
-}
 
 function hash_password(password, callback) {
     bcrypt.genSalt(10, function(err, salt) {
@@ -83,77 +65,22 @@ router.post("/register", function(req, res) {
     const required = ["username", "email", "password"]
     for(i in required) {
         if(!(required[i] in req.body)) {
-            res.status(400);
-            res.json({
-                "status": 400,
-                "message": required[i] + " is missing"
-            })
-            return
+            responses.bad_request(res, required[i] + " is missing")
+            return;
         }
     }
-    if(req.body.username.length < 2) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "username is too short"
-        })
-        return
-    }
-    if(req.body.username.length > 20) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "username is too long"
-        })
-        return
-    }
-    if(!validateEmail(req.body.email)) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "invalid email"
-        })
-        return
-    }
-    if(req.body.password.length < 6) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "password is too short"
-        })
-        return
-    }
-    if(req.body.password.length > 50) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "password is too long"
-        })
-        return
-    }
     if(req.body.password != req.body.password2) {
-        res.status(400);
-        res.json({
-             "status": 400,
-            "message": "passwords doesn't match"
-        })
+        responses.bad_request(res, "passwords doesn't match")
         return
     }
     db.query("select id from users where email='" + req.body.email + "'", function(results) {
         if(results.length > 0) {
-            res.status(400);
-            res.json({
-                "status": 400,
-                "message": "email is already taken"
-            })
+            responses.bad_request(res, "email is already taken")
             return;
         }
         hash_password(req.body.password, (hash) => {
             db.query("insert into users(name,email,password) values('" + req.body.username + "','" + req.body.email + "','" + hash + "')", function(results) {
-                res.json({
-                    "status": 200,
-                    "message": "User created"
-                });
+                responses.ok(res)
             })
         })
     });
@@ -162,20 +89,12 @@ router.post("/register", function(req, res) {
 
 router.post("/login", function(req, res) {
     if(!("email" in req.body) || !("password" in req.body)) {
-        res.status(400)
-        res.json({
-            "status": 400,
-            "message": "invalid credentials"
-        })
+        responses.bad_request(res, "email is already taken")
         return;
     }
     db.query("select * from users where email='" + req.body.email + "'", (results) => {
         if(results.length == 0) {
-            res.status(400)
-            res.json({
-                "status": 400,
-                "message": "invalid credentials"
-            })
+            responses.bad_request(res, "email is already taken")
             return;
         }
         results = results[0]
@@ -187,17 +106,10 @@ router.post("/login", function(req, res) {
                     id: results["ID"],
                     email: results["EMAIL"]
                 })
-                res.json({
-                    "status": 200,
-                    "message": token
-                })
+                responses.ok(res, token)
                 return;
             }
-            res.status(400)
-            res.json({
-                "status": 400,
-                "message": "invalid credentials"
-            })
+            responses.bad_request(res, "email is already taken")
             return;
         })
     })

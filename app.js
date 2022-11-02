@@ -5,13 +5,13 @@ const https = require("https");
 const http = require("http");
 const express = require("express")
 const app = express()
-const db = require("./db");
+const db = require("./modules/db");
 const dataLimit = "50mb"
 app.use(express.json({limit: dataLimit}))
 app.use(express.urlencoded({limit: dataLimit}))
 
-const auth = require("./auth");
-const api = require("./api")
+const auth = require("./modules/auth");
+const api = require("./modules/api");
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/src/index.html")
