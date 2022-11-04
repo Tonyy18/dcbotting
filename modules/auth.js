@@ -21,6 +21,7 @@ exports.verify_jwt = verify_jwt;
 const is_authenticated = (req, callback, useCookie=false) => {
     //Check the valid jwt from authorization header
     //Before any secured api method
+    //Proper headers should be used when sending with ajax
     let auth = req.get("authorization")
     if(useCookie) {
         //Get the jwt token from cookie instead of request header

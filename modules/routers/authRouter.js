@@ -46,8 +46,8 @@ Router.post("/login", function(req, res) {
             if(equals) {
                 //Creating jwt
                 const token = auth.get_jwt({
-                    id: results["ID"],
-                    email: results["EMAIL"]
+                    id: results["id"],
+                    email: results["email"]
                 })
                 res.cookie("jwt", token, {maxAge: process.env.JWT_EXPIRATION})
                 responses.ok(res, token)

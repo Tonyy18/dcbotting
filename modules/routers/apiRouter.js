@@ -27,7 +27,6 @@ router.get("/methods", (req, res) => {
     res.sendFile(parentDir + "/data/methods.json")
 })
 
-
 router.get("/files/bot/:id", (req, res) => {
     const id = req.params.id;
     const send = (bot) => {
@@ -42,7 +41,11 @@ router.get("/files/bot/:id", (req, res) => {
             send(bot);
         } else {
             is_authenticated(req, (bool) => {
-                console.log("Authenticated: " + bool)
+                if(bool && req.payload["id"] == bot["creator"]) {
+                    send(bot);
+                } else {
+                    responses.unauthorized(res, "", null);
+                }
             }, true)
         }
     })
