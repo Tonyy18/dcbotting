@@ -88,9 +88,15 @@ $("#register-form").on("submit", function(e) {
         url: "/auth/register",
         data: inputs,
         success: () => {
+            $(this).find("input").hide();
+            $(this).append('<img src="/static/images/loader.gif" class="loader">')
             $(errorDom).text("Success, you can now login").css("display", "block");
             setTimeout(() => {
                 $(this).parent().find("[data-changeTo]").trigger("click");
+                setTimeout(() => {
+                    $(this).find("input").show();
+                    $(this).find(".loader").remove();
+                }, 1000)
             },2000)
         },
         error(results) {
@@ -106,14 +112,7 @@ function setLoggedInUI() {
     project.notice.show("Successfully logged in");
 }
 
-
-function checkLogin(callback) {
-    authRequest("/ping", "post", {}, (res) => {
-        callback(res);
-    })
-}
-
-checkLogin(function(res) {
+Requests.ping(function(res) {
     if(res) {
         setLoggedInUI();
     }

@@ -207,6 +207,12 @@ textarea:focus {
     text-decoration: underline;
     cursor: pointer;
 }
+.module .module-body form {
+    text-align: center;
+}
+.module .module-body .loader {
+    height: 40px;
+}
 .builder {
     width: calc(100% - 600px) /* Minus two sidebars */
 }

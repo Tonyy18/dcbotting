@@ -251,6 +251,7 @@ function uploadJson(json) {
     const data = json["data"];
     $("#project").find(".component").remove();
     for(event in data) {
+        console.log(event)
         const eventDom = project.addEvent(event);
         eventDom.find(".component-statements .input-row").remove();
         for(let a = 0; a < data[event]["expressions"].length; a++) {
@@ -284,7 +285,10 @@ $("#upload-selector").on("change", function(event) {
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
         unsaved();
-        const data = JSON.parse(event.currentTarget.result);
+        let data = JSON.parse(event.currentTarget.result);
+        if(typeof data == "string") {
+            data = JSON.parse(data);
+        }
         uploadJson(data);
     });
     reader.readAsText(file, "UTF-8");
@@ -854,6 +858,7 @@ function showModal(id, closable = true) {
 function closeModal(id) {
     const modal = $("#" + id);
     modal.removeClass("open")
+    modal.find(".main-error").empty().hide();
     modal.fadeOut();
 }
 
@@ -1031,15 +1036,7 @@ function getJwt() {
     }
     return false;
 }
-$("#save-btn").click(function() {
-    const jwt = getJwt();
-    if(!jwt) {
-        showModal("login-modal");
-        return;
-    }
-})
-
-function authRequest(url, type, data, callback) {
+function authRequest(url, type, data, callback, error) {
     $.ajax({
         url: url,
         type: type,
@@ -1047,11 +1044,29 @@ function authRequest(url, type, data, callback) {
         headers: {
             "authorization": "bearer " + getJwt()
         },
-        success: function() {
-            callback(true)
+        success: function(e) {
+            callback(e)
         },
-        error: function() {
-            callback(false)
+        error: function(e) {
+            error(e)
         }
     })
 }
+
+class Requests {
+    static ping(callback) {
+        authRequest("/ping", "post", {}, (res) => {
+            callback(true)
+        }, (error) => {
+            callback(false)
+        })
+    }
+}
+
+$("#save-btn").click(function() {
+    const jwt = getJwt();
+    if(!jwt) {
+        showModal("login-modal");
+        return;
+    }
+})

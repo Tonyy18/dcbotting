@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     database: process.env.SQL_DATABASE
 })
 connection.connect();
-exports.query = (query, success = ()=>{}, error=()=>{}) => {
+let query = (query, success = ()=>{}, error=()=>{}) => {
     connection.query(query, (err, results, fields) => {
         if(err) {
             console.error(err);
@@ -17,3 +17,4 @@ exports.query = (query, success = ()=>{}, error=()=>{}) => {
         success(results);
     })
 }
+exports.query = query
