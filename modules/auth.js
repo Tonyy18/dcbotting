@@ -18,10 +18,19 @@ const verify_jwt = (token, success = () =>{}, error = () => {}) => {
     }
 }
 exports.verify_jwt = verify_jwt;
-const is_authenticated = (req, callback) => {
+const is_authenticated = (req, callback, useCookie=false) => {
     //Check the valid jwt from authorization header
     //Before any secured api method
     let auth = req.get("authorization")
+    if(useCookie) {
+        //Get the jwt token from cookie instead of request header
+        const sp = req.headers.cookie.split(";");
+        for(let a = 0; a < sp.length; a++) {
+            if(sp[a].indexOf("jwt=") > -1) {
+                auth = "bearer " + sp[a].split("=")[1];
+            }
+        }
+    }
     if(!auth) {
         callback(false);
         return;

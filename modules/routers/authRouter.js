@@ -1,5 +1,8 @@
 const express = require("express")
 const Router = express.Router();
+const db = require("../db");
+const auth = require("../auth")
+const responses = require("../responses")
 
 Router.post("/register", function(req, res) {
     const required = ["username", "email", "password"]
@@ -18,7 +21,7 @@ Router.post("/register", function(req, res) {
             responses.bad_request(res, "email is already taken")
             return;
         }
-        hash_password(req.body.password, (hash) => {
+        auth.hash_password(req.body.password, (hash) => {
             db.query("insert into users(name,email,password) values('" + req.body.username + "','" + req.body.email + "','" + hash + "')", function(results) {
                 responses.ok(res)
             })
@@ -39,13 +42,14 @@ Router.post("/login", function(req, res) {
         }
         results = results[0]
         const hashed = results["password"];
-        passwords_equal(req.body.password, hashed, (equals) => {
+        auth.passwords_equal(req.body.password, hashed, (equals) => {
             if(equals) {
                 //Creating jwt
-                const token = get_jwt({
+                const token = auth.get_jwt({
                     id: results["ID"],
                     email: results["EMAIL"]
                 })
+                res.cookie("jwt", token, {maxAge: process.env.JWT_EXPIRATION})
                 responses.ok(res, token)
                 return;
             }

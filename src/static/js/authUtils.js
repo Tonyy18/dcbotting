@@ -122,6 +122,7 @@ function logout() {
     $("#form-buttons").show();
     $("#logout-buttons").hide();
     localStorage.removeItem("jwt");
+    document.cookie = "jwt=; expires=-1"
 }
 
 $("#login-form").on("submit", function(e) {
