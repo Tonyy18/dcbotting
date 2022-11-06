@@ -4,16 +4,28 @@ const db = require("../db")
 const parentDir = require("../parentUrl");
 const api = require("../api");
 const responses = require("../responses");
-const { is_authenticated } = require("../auth");
+const auth = require("../auth");
+const { is_authenticated, jwt_middleware } = require("../auth");
 
 router.get("/bots/:id", (req, res) => {
     const id = req.params.id;
-    api.getBot(id, (res) => {
-        if(!res) {
-            res.sendStatus(404);
+    api.getBot(id, (response) => {
+        if(!response) {
+            responses.not_found(res);
             return;
         }
-        res.json(res);
+        if(response["public"]) {
+            responses.ok(res, response)
+            return;
+        } else {
+            auth.is_authenticated(req, (bool, data) => {
+                if(bool && response["creator"] == data["id"]) {
+                    responses.ok(res, response)
+                } else {
+                    responses.unauthorized(res, "You are not authorized to this bot");
+                }
+            })
+        }
     })
 })
 
@@ -47,6 +59,25 @@ router.get("/files/bot/:id", (req, res) => {
                     responses.unauthorized(res, "", null);
                 }
             }, true)
+        }
+    })
+})
+
+router.use(jwt_middleware);
+router.post("/bot", function(req, res) {
+    if(!("name" in req.body)) {
+        responses.bad_request(res, "Name field is missing");
+        return;
+    }
+    if(!("data" in req.body)) {
+        responses.bad_request(res, "Data field is missing");
+        return;
+    }
+    api.saveBot(req.payload["id"], req.body.name, req.body.data, (response) => {
+        if("insertId" in response) {
+            responses.ok(res, response["insertId"]);
+        } else {
+            responses.internal_server_error(res);
         }
     })
 })

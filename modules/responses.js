@@ -32,3 +32,9 @@ exports.forbidden = (res, text, type="json") => {
 exports.not_found = (res, text, type="json") => {
     return create_response(res, 404, text == null ? "Not Found" : text, type)
 }
+exports.internal_server_error = (res, text, type="json") => {
+    return create_response(res, 500, text == null ? "Internal server error" : text, type)
+}
+exports.session_expired = (res, text, type="json") => {
+    return create_response(res, 440, text == null ? "Session is expired" : text, type)
+}

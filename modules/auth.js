@@ -44,9 +44,9 @@ const is_authenticated = (req, callback, useCookie=false) => {
     auth = auth[1]
     verify_jwt(auth, (payload) => {
         req.payload = payload;
-        callback(true);
+        callback(true, payload);
     }, (error) => {
-        callback(false);
+        callback(false, error);
         return;
     })
 }
@@ -54,10 +54,14 @@ exports.is_authenticated = is_authenticated;
 const jwt_middleware = (req, res, next) => {
     //Check the valid jwt from authorization header
     //Before any secured api method
-    is_authenticated(req, function(bool) {
+    is_authenticated(req, function(bool, response) {
         if(bool) {
             next();
         } else {
+            if(response instanceof jwt.TokenExpiredError) {
+                responses.session_expired(res)
+                return;
+            }
             responses.unauthorized(res);
         }
     })

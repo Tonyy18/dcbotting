@@ -231,8 +231,8 @@ getToken(function(token) {
         getBot(function(json, botParam) {
             uploadJson(json)
             window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
-        }, function() {
-            window.history.replaceState(null, null, "?token=" + token);
+        }, function(error, botParam) {
+            window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
         });
         init(token)
     }, 1000);

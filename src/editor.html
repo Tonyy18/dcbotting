@@ -32,6 +32,21 @@
 </head>
 <body>
 
+<div class="module module-600" id="bot-modal">
+    <div class="module-background"></div>
+    <div class="module-padding">
+        <div class="module-body">
+            <header class="header-small">Save bot</header>
+            <div class="module-content">
+                <form id="bot-form">
+                    <p class="main-error"></p>
+                    <input type="text" placeholder="Name for your bot" name="bot-name">
+                    <input type="submit" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="module module-600" id="token-modal">
     <div class="module-background"></div>
     <div class="module-padding">
@@ -124,7 +139,7 @@
             <input type="file" id="upload-selector" accept=".dcbotting" hidden>
         </label>
         <div class="space"></div>
-        <div class="nav-item" id="save-btn"><h3>Save</h3></div>
+        <div class="nav-item" id="save-btn" data-modal="bot-modal"><h3>Save</h3></div>
         <div class="nav-item" id="submit"><h3 class="run-btn">Submit</h3></div>
         <div class="console-btn nav-item" id="console-btn">
             <h3>Console</h3>
@@ -168,6 +183,7 @@
         </div>
     </div>
 </aside>
+<script src="/static/js/utils.js"></script>
 <script src="/static/js/lib.js"></script>
 <script src="/static/js/bot.js"></script>
 <script src="/static/js/authUtils.js"></script>

@@ -10,4 +10,11 @@ let getBot = (id, callback) => {
     })
 }
 
+let saveBot = (owner, name, data, callback) => {
+    db.query("INSERT INTO bots (creator,name,data) VALUES(" + owner + ", '" + name + "', '" + data + "')", (results) => {
+        callback(results);
+    })
+}
+
 exports.getBot = getBot;
+exports.saveBot = saveBot;

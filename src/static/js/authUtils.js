@@ -113,16 +113,18 @@ function setLoggedInUI() {
 }
 
 Requests.ping(function(res) {
-    if(res) {
-        setLoggedInUI();
+    setLoggedInUI();
+}, function(error) {
+    if(error.code == 440) {
+        project.notice.show("Login session has been expired");
     }
+    logoutUi();
 })
 
-function logout() {
+function logoutUi() {
     $("#form-buttons").show();
     $("#logout-buttons").hide();
-    localStorage.removeItem("jwt");
-    document.cookie = "jwt=; expires=-1"
+    logout();
 }
 
 $("#login-form").on("submit", function(e) {
@@ -131,24 +133,18 @@ $("#login-form").on("submit", function(e) {
     errorDom.hide();
     const email = $.trim($(this).find("[name='email']").val());
     const password = $.trim($(this).find("[name='password']").val());
-    $.ajax({
-        type: "POST",
-        url: "/auth/login",
-        data: {
-            email: email,
-            password: password
-        },
-        success: function(results) {
-            localStorage.setItem("jwt", results["message"]);
-            closeModal("login-modal");
-            setLoggedInUI();
-        },
-        error: function(results) {
-            $(errorDom).text(results.responseJSON["message"]).css("display", "block");
-        }
+    Requests.login({
+        email: email,
+        password: password
+    }, (results) => {
+        localStorage.setItem("jwt", results["message"]);
+        closeModal("login-modal");
+        setLoggedInUI();
+    }, (error) => {
+        $(errorDom).text(error["message"]).css("display", "block");
     })
     return false;
 })
 $("#logout-btn").click(function() {
-    logout();
+    logoutUi();
 })

@@ -891,20 +891,14 @@ function getUrlParam(param) {
 function getBot(callback = null, error = null) {
     const botParam = getUrlParam("bot");
     if(botParam) {
-        $.ajax({
-            type: "GET",
-            url: "/api/bots/" + botParam,
-            success: function(result) {
-                project.notice.show(result["name"] + " loaded")
-                callback(JSON.parse(result["data"]), botParam)
-            },
-            error: function(result) {
-                if(result.status == 404) {
-                    project.notice.show("Bot was not found")
-                }
-                if(error && typeof error == "function") {
-                    error(result)
-                }
+        Requests.getBot(botParam, (result) => {
+            project.notice.show(result["message"]["name"] + " loaded")
+            callback(JSON.parse(result["message"]["data"]), botParam)
+        }, (result) => {
+            console.log(result["message"])
+            project.notice.show(result["message"]);
+            if(error && typeof error == "function") {
+                error(result, botParam)
             }
         })
     } else {
@@ -1028,45 +1022,59 @@ function getRandom() {
 $("[data-modal]").click(function() {
     showModal($(this).attr("data-modal"))
 })
+$("[data-closeModal]").click(function() {
+    closeModal($(this).attr("data-closeModal"))
+})
 
-function getJwt() {
-    const jwt = localStorage.getItem("jwt");
-    if(jwt != null && (jwt && jwt != "")) {
-        return jwt
-    }
-    return false;
-}
-function authRequest(url, type, data, callback, error) {
-    $.ajax({
-        url: url,
-        type: type,
-        data: data,
-        headers: {
-            "authorization": "bearer " + getJwt()
-        },
-        success: function(e) {
-            callback(e)
-        },
-        error: function(e) {
-            error(e)
-        }
-    })
-}
-
-class Requests {
-    static ping(callback) {
-        authRequest("/ping", "post", {}, (res) => {
-            callback(true)
-        }, (error) => {
-            callback(false)
-        })
-    }
-}
-
-$("#save-btn").click(function() {
+$("#save-btn").click(function(e) {
     const jwt = getJwt();
     if(!jwt) {
         showModal("login-modal");
         return;
     }
+})
+$("#bot-form").on("submit", function(e) {
+    e.preventDefault();
+    const json = projectToJson();
+    const errorDom = $(this).find(".main-error");
+    errorDom.hide();
+    if(json == undefined) {
+        project.notice.show("Cannot save empty project");
+        closeModal("bot-modal");
+        return false;
+    }
+    const input = $(this).children("[name='bot-name']")
+    const name = $.trim(input.val());
+    if(!name || name.length < 2) {
+        project.error(input)
+        return false;
+    }
+    if(name.length > 50) {
+        errorDom.show().html("Name is too long")
+        project.error(input)
+        return;
+    }
+    Requests.saveBot({
+        name: name,
+        data: JSON.stringify(json)
+    }, (results) => {
+        project.notice.show("Bot saved successfully")
+        var url = new URL(window.location.href);
+        url.searchParams.delete("bot")
+        url.searchParams.append("bot", results["message"])
+        $(this).find("input").hide();
+        $(this).append('<img src="/static/images/loader.gif" class="loader">')
+        errorDom.html("Saved, redirecting ...").css("display", "block")
+        const href = url.href;
+        setTimeout(function() {
+            document.location.href = href;
+        }, 3000)
+    }, function(error) {
+        if(error.code == 401) {
+            errorDom.show().html("You are not logged in")
+            return;
+        }
+        errorDom.show().html(error.message)
+    })
+    return false;
 })
