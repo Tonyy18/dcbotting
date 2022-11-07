@@ -7,7 +7,7 @@ const responses = require("../responses");
 const auth = require("../auth");
 const { is_authenticated, jwt_middleware } = require("../auth");
 
-router.get("/bots/:id", (req, res) => {
+router.get("/bot/:id", (req, res) => {
     const id = req.params.id;
     api.getBot(id, (response) => {
         if(!response) {

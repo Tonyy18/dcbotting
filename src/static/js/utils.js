@@ -45,7 +45,7 @@ class Requests {
         authRequest("/ping", "post", {}, (res) => {
             callback(res)
         }, (err) => {
-            error(err.responseJSON)
+            error(err)
         })
     }
     static login(data, callback, error) {
@@ -57,7 +57,7 @@ class Requests {
                 callback(results);
             },
             error: function(results) {
-                error(results.responseJSON);
+                error(results);
             }
         })
     }
@@ -65,14 +65,14 @@ class Requests {
         authRequest("/api/bot", "post", data, (res) => {
             callback(res)
         }, (err) => {
-            error(err.responseJSON);
+            error(err);
         })
     }
     static getBot(id, callback,error) {
-        authRequest("/api/bots/" + id, "get", "", (res) => {
+        authRequest("/api/bot/" + id, "get", "", (res) => {
             callback(res)
         }, (err) => {
-            error(err.responseJSON);
+            error(err);
         })
     }
 }

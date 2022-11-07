@@ -890,7 +890,7 @@ function getUrlParam(param) {
 
 function getBot(callback = null, error = null) {
     const botParam = getUrlParam("bot");
-    if(botParam) {
+    if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
             project.notice.show(result["message"]["name"] + " loaded")
             callback(JSON.parse(result["message"]["data"]), botParam)
