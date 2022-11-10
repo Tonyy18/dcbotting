@@ -1075,7 +1075,7 @@ $("#bot-form").on("submit", function(e) {
         $(this).find("input").hide();
         $(this).append('<img src="/static/images/loader.gif" class="loader">')
     }
-    if(project.botLoaded["creator"] != getJwtPayload()["id"]) {
+    if(!project.botLoaded || project.botLoaded["creator"] != getJwtPayload()["id"]) {
         //Save as a new bot if not the original creator of the bot
         Requests.saveBot({
             name: name,
