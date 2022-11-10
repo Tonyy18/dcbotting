@@ -1,18 +1,18 @@
 const db = require("./db")
 
-let getBot = (id, callback) => {
+let getBot = (id, callback, error) => {
     db.query("SELECT * FROM bots WHERE id='" + id + "'", (result) => {
-        if(result.length == 0) {
-            callback(false)
-            return;
-        }
         callback(result[0])
+    }, (err) => {
+        error(err);
     })
 }
 
-let saveBot = (owner, name, data, callback) => {
+let saveBot = (owner, name, data, callback, error) => {
     db.query("INSERT INTO bots (creator,name,data) VALUES(" + owner + ", '" + name + "', '" + data + "')", (results) => {
         callback(results);
+    }, (err) => {
+        error(err);
     })
 }
 
