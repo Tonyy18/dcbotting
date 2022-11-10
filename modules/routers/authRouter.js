@@ -3,6 +3,7 @@ const Router = express.Router();
 const db = require("../db");
 const auth = require("../auth")
 const responses = require("../responses")
+const { Validator, keysToValidators } = require("../common");
 
 Router.post("/register", function(req, res) {
     const required = ["username", "email", "password"]
@@ -12,6 +13,17 @@ Router.post("/register", function(req, res) {
             return;
         }
     }
+
+    for(key in req.body) {
+        if(key in keysToValidators) {
+            const valid = keysToValidators[key](req.body[key]);
+            if(valid !== true) {
+                responses.bad_request(res, valid);
+                return;
+            }
+        }
+    }
+
     if(req.body.password != req.body.password2) {
         responses.bad_request(res, "passwords doesn't match")
         return

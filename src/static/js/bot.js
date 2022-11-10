@@ -14,6 +14,7 @@ class Bot {
         this.lastMessage = null;
         this.reconnected = 0;
         this.ready = false;
+        this.resume_url = null;
 
         this.headers = {
             "Authorization": "Bot " + this.token
@@ -252,11 +253,15 @@ function init(token) {
     }
     bot.onclose = function(event) {
         const code = event.code;
+        bot.open = false
         console.log(bot.lastMessage);
+        status("offline");
         if(code >= 4000) {
+            //Should be resumed to retriece missed events during the down time
             Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
         } else {
             Logger.error("Connection closed");
+            bot.reconnect();
         }
     }
     
@@ -280,6 +285,9 @@ function init(token) {
                 bot.sendHeartbeat()
             }, interval)
             Logger.log("Heartbeat started, interval " + interval + "ms");
+        }
+        if(op == 11) {
+            console.log(11);
         }
         if(op == 1) {
             //Server asks for a heartbeat
@@ -333,6 +341,7 @@ function init(token) {
     }   
     
     bot.on("ready", function(data) {
+        bot.resume_url = data["resume_gateway_url"];
         bot.ready = true;
         bot.reconnected = 0;
         bot.sessionId = data["session_id"]

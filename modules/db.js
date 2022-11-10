@@ -17,4 +17,33 @@ let query = (query, success = ()=>{}, error=()=>{}) => {
         success(results);
     })
 }
+
+let getRequiredCols = (table, callback) => {
+    connection.query("SHOW COLUMNS FROM " + table, (err, results, fields) => {
+        const re = [];
+        for(let a = 0; a < results.length; a++) {
+            const col = results[a];
+            if(col["Null"] == "NO" && col["Key"] != "PRI") {
+                re.push(col["Field"]);
+            }
+        }
+        callback(re);
+    })
+}
+
+let getCols = (table, callback) => {
+    connection.query("SHOW COLUMNS FROM " + table, (err, results, fields) => {
+        const re = [];
+        for(let a = 0; a < results.length; a++) {
+            const col = results[a];
+            if(col["Key"] != "PRI") {
+                re.push(col["Field"]);
+            }
+        }
+        callback(re);
+    })
+}
+
 exports.query = query
+exports.getRequiredCols = getRequiredCols;
+exports.getCols = getCols;

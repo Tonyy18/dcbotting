@@ -16,5 +16,23 @@ let saveBot = (owner, name, data, callback) => {
     })
 }
 
+function buildUpdateParams(dict) {
+    let sql = "";
+    for(key in dict) {
+        sql += key + "='" + dict[key] + "',";
+    }
+    return sql.substring(0, sql.length - 1);;
+}
+
+let updateBot = (id, data, callback, error=() => {}) => {
+    const sql = buildUpdateParams(data);
+    db.query("UPDATE bots SET " + sql + " WHERE id=" + id, (result) => {
+        callback(result);
+    }, (err) => {
+        error(err);
+    })
+}
+
 exports.getBot = getBot;
 exports.saveBot = saveBot;
+exports.updateBot = updateBot;

@@ -14,16 +14,21 @@ function isLoggedIn() {
     const jwt = getJwt();
     return jwt != false;
 }
+function getJwtPayload () {
+    const token = getJwt();
+    if(!token) {
+        return false;
+    }
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
 
+    return JSON.parse(jsonPayload);
+}
 function authRequest(url, type, data, callback, error) {
     const jwt = getJwt();
-    if(!jwt) {
-        error({
-            code: 401,
-            message: "Unauthorized"
-        })
-        return;
-    }
     $.ajax({
         url: url,
         type: type,
@@ -40,12 +45,26 @@ function authRequest(url, type, data, callback, error) {
     })
 }
 
+function getResponse(res) {
+    console.log(res)
+    if(res["message"] == undefined) {
+        if(res.responseJSON == undefined || res.responseJSON["message"] == undefined) {
+            return {
+                code: 500,
+                message: "Internal server error"
+            }
+        }
+        return res.responseJSON;
+    }
+    return res;
+}
+
 class Requests {
     static ping(callback, error=()=>{}) {
         authRequest("/ping", "post", {}, (res) => {
             callback(res)
         }, (err) => {
-            error(err)
+            error(getResponse(err))
         })
     }
     static login(data, callback, error) {
@@ -57,7 +76,7 @@ class Requests {
                 callback(results);
             },
             error: function(results) {
-                error(results);
+                error(getResponse(results));
             }
         })
     }
@@ -65,14 +84,22 @@ class Requests {
         authRequest("/api/bot", "post", data, (res) => {
             callback(res)
         }, (err) => {
-            error(err);
+            error(getResponse(err));
         })
     }
     static getBot(id, callback,error) {
         authRequest("/api/bot/" + id, "get", "", (res) => {
             callback(res)
         }, (err) => {
-            error(err);
+            error(getResponse(err));
+        })
+    }
+
+    static updateBot(id, data, callback, error) {
+        authRequest("/api/bot/" + id, "put", data, (res) => {
+            callback(res);
+        }, (err) => {
+            error(getResponse(err));
         })
     }
 }

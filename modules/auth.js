@@ -59,6 +59,7 @@ const jwt_middleware = (req, res, next) => {
             next();
         } else {
             if(response instanceof jwt.TokenExpiredError) {
+                res.clearCookie("jwt");
                 responses.session_expired(res)
                 return;
             }

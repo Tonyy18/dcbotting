@@ -27,4 +27,21 @@ class Validator {
             return "password is too long"
         }
     }
+    static name(text) {
+        if(text.length > 50) {
+            return "bot name is too long"
+        }
+        if(text.length < 2) {
+            return "bot name is too short";
+        }
+        return true;
+    } 
 }
+const keysToValidators = {
+    "username": Validator.username,
+    "email": Validator.email,
+    "password": Validator.password,
+    "name": Validator.name
+}
+exports.Validator = Validator;
+exports.keysToValidators = keysToValidators;

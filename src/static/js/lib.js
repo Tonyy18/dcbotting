@@ -28,6 +28,7 @@ const StatementOptions = {
 // ---------------- PROJECT ----------------
 
 const project = $("#project"); //Component list
+project.botLoaded = null;
 project.notice = new Notice("#project-notice");
 const projectWrapper = document.getElementById("projectWrapper")
 project.addEvent = function(event) {
@@ -892,10 +893,10 @@ function getBot(callback = null, error = null) {
     const botParam = getUrlParam("bot");
     if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
+            project.botLoaded = result["message"];
             project.notice.show(result["message"]["name"] + " loaded")
             callback(JSON.parse(result["message"]["data"]), botParam)
         }, (result) => {
-            console.log(result["message"])
             project.notice.show(result["message"]);
             if(error && typeof error == "function") {
                 error(result, botParam)
@@ -1027,11 +1028,20 @@ $("[data-closeModal]").click(function() {
 })
 
 $("#save-btn").click(function(e) {
+    const json = projectToJson();
+    if(json == undefined) {
+        project.notice.show("Cannot save empty project");
+        return;
+    }
     const jwt = getJwt();
     if(!jwt) {
         showModal("login-modal");
         return;
     }
+    if(project.botLoaded && project.botLoaded != null && project.botLoaded["creator"] == getJwtPayload()["id"]) {
+        $("#bot-modal [name='bot-name']").val(project.botLoaded["name"]);
+    }
+    showModal("bot-modal");
 })
 $("#bot-form").on("submit", function(e) {
     e.preventDefault();
@@ -1054,27 +1064,57 @@ $("#bot-form").on("submit", function(e) {
         project.error(input)
         return;
     }
-    Requests.saveBot({
-        name: name,
-        data: JSON.stringify(json)
-    }, (results) => {
-        project.notice.show("Bot saved successfully")
-        var url = new URL(window.location.href);
-        url.searchParams.delete("bot")
-        url.searchParams.append("bot", results["message"])
-        $(this).find("input").hide();
-        $(this).append('<img src="/static/images/loader.gif" class="loader">')
-        errorDom.html("Saved, redirecting ...").css("display", "block")
-        const href = url.href;
-        setTimeout(function() {
-            document.location.href = href;
-        }, 3000)
-    }, function(error) {
+    function showSavingError(error) {
         if(error.code == 401) {
             errorDom.show().html("You are not logged in")
             return;
         }
         errorDom.show().html(error.message)
-    })
+    }
+    const showModalLoading = () => {
+        $(this).find("input").hide();
+        $(this).append('<img src="/static/images/loader.gif" class="loader">')
+    }
+    if(project.botLoaded["creator"] != getJwtPayload()["id"]) {
+        //Save as a new bot if not the original creator of the bot
+        Requests.saveBot({
+            name: name,
+            data: JSON.stringify(json)
+        }, (results) => {
+            project.notice.show("Bot saved successfully")
+            var url = new URL(window.location.href);
+            url.searchParams.delete("bot")
+            url.searchParams.append("bot", results["message"])
+            showModalLoading();
+            errorDom.html("Saved, redirecting ...").css("display", "block")
+            const href = url.href;
+            setTimeout(function() {
+                document.location.href = href;
+            }, 3000)
+        }, function(error) {
+            showSavingError(error);
+        })
+    } else {
+        Requests.updateBot(project.botLoaded["id"], {
+            name: name,
+            data: JSON.stringify(json)
+        }, (results) => {
+            showModalLoading();
+            errorDom.html("Updating bot: " + project.botLoaded["name"]).css("display", "block")
+            setTimeout(() => {
+                closeModal("bot-modal");
+                project.notice.show("Bot updated!")
+                setTimeout(() => {
+                    $(this).find("input").show();
+                    $(this).find(".loader").remove();
+                }, 1000)
+            }, 3000)
+            project.botLoaded["name"] = name;
+            project.botLoaded["data"] = json;
+        }, function(error) {
+            showSavingError(error);
+        })
+    }
+
     return false;
 })
