@@ -103,3 +103,26 @@ class Requests {
         })
     }
 }
+
+function showModal(id, closable = true) {
+    const modal = $("#" + id);
+    modal.fadeIn();
+    modal.addClass("open");
+    if(closable) {
+        modal.children(".module-background").on("click", function() {
+            closeModal(id);
+        })
+        modal.find("[data-changeto]").off("click").on("click", function() {
+            closeModal(id);
+            showModal($(this).attr("data-changeTo"));
+        })
+    } else {
+        modal.children(".module-background").off("click")
+    }
+}
+function closeModal(id) {
+    const modal = $("#" + id);
+    modal.removeClass("open")
+    modal.find(".main-error").empty().hide();
+    modal.fadeOut();
+}

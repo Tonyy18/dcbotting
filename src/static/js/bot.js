@@ -125,7 +125,7 @@ class Bot {
     }
 
     getGateway(callback) {
-        callback("wss://gateway.discord.gg/")
+        callback("wss://gateway.discord.gg/") //workaround due to cors error
         /* $.ajax({
             url: "https://discord.com/api/gateway/bot",
             dataType: "json",

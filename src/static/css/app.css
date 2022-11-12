@@ -401,13 +401,22 @@ textarea:focus {
 .sidebar .bottom-buttons.single > *  {
     width: 100%;
 }
-.sidebar .bottom-buttons div:not(:last-child) {
+.sidebar .bottom-buttons > *:not(:last-child) {
     border-right: 1px solid #23272A;
 }
-.sidebar .bottom-buttons > div:hover {
+.sidebar .bottom-buttons > *:hover {
     background-color: white;
     color: black;
 }
+.sidebar .bottom-buttons > *:hover .fas {
+    color: black;
+}
+.sidebar .bottom-buttons .square-btn {
+    flex-basis: 50px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
 /* ------- COMPONENT -------*/
 
 
@@ -642,6 +651,9 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.component-list li.no-components h1 {
+    color: #212121;
 }
 .component-list li.no-components p {
     display: inline-block;

@@ -11,17 +11,19 @@ const auth = require("./modules/auth");
 
 const indexRouters = require("./modules/routers/indexRouter");
 const authRouter = require("./modules/routers/authRouter");
-const api = require("./modules/routers/apiRouter");
+const apiRouter = require("./modules/routers/apiRouter");
+const profileRouter = require("./modules/routers/profileRouter");
 
 app.use("", indexRouters);
 
 app.get("/static/*", (req, res) => {
+    console.log(req.originalUrl)
     res.sendFile(__dirname + "/src/" + req.originalUrl)
 })
 
-app.use("/api", api.router);
+app.use("/api", apiRouter);
 app.use("/auth", authRouter);
-
+app.use("/profile", profileRouter);
 app.use(auth.jwt_middleware);
 app.post("/ping", function(req, res) {
     res.sendStatus(200)
