@@ -30,6 +30,7 @@ const StatementOptions = {
 const project = $("#project"); //Component list
 project.botLoaded = null;
 project.notice = new Notice("#project-notice");
+project.saved = false;
 const projectWrapper = document.getElementById("projectWrapper")
 project.addEvent = function(event) {
     const found = project.find(".component[data-name='" + event + "']")
@@ -252,7 +253,6 @@ function uploadJson(json) {
     const data = json["data"];
     $("#project").find(".component").remove();
     for(event in data) {
-        console.log(event)
         const eventDom = project.addEvent(event);
         eventDom.find(".component-statements .input-row").remove();
         for(let a = 0; a < data[event]["expressions"].length; a++) {
@@ -345,7 +345,7 @@ function replaceData(string, data, component=null) {
     return string;
 }
 
-function executejavascriptComponent(component, obj=null) {
+function executejavascriptComponent(component, obj=null, errorText = null) {
     const input = component.find("textarea[name='javascript']")
     const code = input.val()
     try {
@@ -356,6 +356,9 @@ function executejavascriptComponent(component, obj=null) {
         }
     } catch(err) {
         Logger.error(err);
+        if(errorText) {
+            Logger.error(errorText);
+        }
         project.error(input);
     }
 }
@@ -411,7 +414,7 @@ function submit() {
                 }
 
                 if(methodName == "javascript") {
-                    return executejavascriptComponent(method, data);
+                    return executejavascriptComponent(method, data, 'Error ocurred in previous execution: ' + eventName + ' > ' + methodName);
                 }
 
                 const toSend = {}
@@ -432,6 +435,7 @@ function submit() {
                         value = replaceData(value, data, input);
                         if(typeof value == "object" && "error" in value) {
                             project.error(input);
+                            Logger.error('Error ocurred in previous execution: ' + eventName + ' > ' + methodName);
                             Logger.error(value["error"])
                             //return value;
                             return false;
@@ -440,11 +444,12 @@ function submit() {
                     toSend[field] = value;
                 }
                 const results = bot.exec(toSend, methodName);
-                    
+                Logger.success(methodName + " method executed")
                 //Handle errors
                 if(typeof results == "object" && "error" in results && results["error"] == true){
                     delete results["error"];
                     for(key in results) {
+                        Logger.error('Error ocurred in previous execution: ' + eventName + ' > ' + methodName);
                         Logger.error(key + ": " + results[key]);
                     }
                     let errorInput = method.find(".input-row input[name='" + results[Object.keys(results)[0]] + "']")
@@ -462,7 +467,7 @@ function submit() {
         }
         
     }
-    Logger.log("Project submitted to bot")
+    Logger.success("Project submitted to bot")
     project.notice.show("Project submitted to bot");
     $("#submit").removeClass("unsaved");
 }
@@ -1122,3 +1127,8 @@ $("#bot-form").on("submit", function(e) {
 
     return false;
 })
+//window.onbeforeunload = confirmExit;
+//function confirmExit()
+//{
+//    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+//}
