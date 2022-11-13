@@ -120,6 +120,7 @@ class Bot {
             return;
         }
         Logger.log("Reconnecting ...")
+        
         this.connect();
         this.reconnected++;
     }
@@ -168,6 +169,7 @@ class Bot {
         clearInterval(bot.heartbeat);
         servers.empty();
         this.socket.close();
+        this.guilds = {};
     }
 
     exec(data, method) {
@@ -297,11 +299,13 @@ function init(token) {
         if(op == 7) {
             //Disconnected
             bot.reconnect("Disconnected");
+            console.log(7)
         }
 
         if(op == 9) {
             //Invalid Session
             bot.reconnect("Invalid session");
+            console.log(9)
         }
 
         if(op == 0) {
@@ -350,13 +354,12 @@ function init(token) {
         const link = inviteLink(clientId);
         bot.setInviteLink(link);
         status("online");
-        bot.log(data.user.username + " is now online")
+        Logger.success("[Bot] " + data.user.username + " is now online")
         Logger.log("The following invitation link is with administrator permissions and for testing only. Generate a new link for public sharing from the discord developer portal. <a target='__blank' href='https://discord.com/developers/applications/" + clientId + "/oauth2'>Developer portal</a>");
         bot.log("Invitation link for testing: <a href='" + bot.getInviteLink() + "' target='__blank'>https://discord.com/api/oauth2/authorize?client_id=" + clientId + "&permissions=8&scope=bot</a>");
     }, false)
     bot.on("guild_create", function(data) {
         if(data.id in bot.guilds) return;
-
         servers.add(data)
         bot.guilds[data.id] = data;
     }, false)

@@ -1,3 +1,11 @@
+:root {
+    --main-blue: #7289DA;
+    --main-white: #FFFFFF;
+    --main-gray: #99AAB5;
+    --main-dark: #2C2F33;
+    --main-black: #23272A;
+    --notice-color: #273649;
+}
 input[type=text].input,
 input[type=password].input {
     width: 100%;

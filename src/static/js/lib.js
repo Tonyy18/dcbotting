@@ -895,6 +895,7 @@ function getBot(callback = null, error = null) {
         Requests.getBot(botParam, (result) => {
             project.botLoaded = result["message"];
             project.notice.show(result["message"]["name"] + " loaded")
+            Logger.success('Bot "' + result["message"]["name"] + '" loaded successfully', )
             callback(JSON.parse(result["message"]["data"]), botParam)
         }, (result) => {
             project.notice.show(result["message"]);
@@ -964,6 +965,9 @@ class Logger {
     }
     static error(text) {
         this.display("[error] " + text, "#FF5151");
+    }
+    static success(text) {
+        this.display(text, "#00A730")
     }
     static display(text, color = false) {
         var date = new Date();

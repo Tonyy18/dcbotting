@@ -17,7 +17,6 @@ const profileRouter = require("./modules/routers/profileRouter");
 app.use("", indexRouters);
 
 app.get("/static/*", (req, res) => {
-    console.log(req.originalUrl)
     res.sendFile(__dirname + "/src/" + req.originalUrl)
 })
 
