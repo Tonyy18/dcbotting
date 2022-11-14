@@ -235,7 +235,11 @@ getToken(function(token) {
             uploadJson(json)
             window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
         }, function(error, botParam) {
-            window.history.replaceState(null, null, "?token=" + token);
+            if(error != null) {
+                window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
+            } else {
+                window.history.replaceState(null, null, "?token=" + token);
+            }
         });
         init(token)
     }, 1000);

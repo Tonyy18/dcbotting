@@ -30,7 +30,7 @@ const StatementOptions = {
 const project = $("#project"); //Component list
 project.botLoaded = null;
 project.notice = new Notice("#project-notice");
-project.saved = false;
+project.saved = true;
 const projectWrapper = document.getElementById("projectWrapper")
 project.addEvent = function(event) {
     const found = project.find(".component[data-name='" + event + "']")
@@ -43,7 +43,7 @@ project.addEvent = function(event) {
     highlightIn(dom, this, 1000)
     dom.addClass("active");
     project.selected = dom;
-    unsaved();
+    unSubmitted();
     return dom
 }
 
@@ -59,7 +59,7 @@ project.addMethod = function(methodName) {
 
     project.selected.find(".component").removeClass("active");
     dom.addClass("active");
-    unsaved();
+    unSubmitted();
     return dom
 }
 project.error = function(target) {
@@ -178,15 +178,25 @@ project.on("click", ".component[data-type='event']", function() {
     project.selected = $(this); //Where to append methods
 })
 
-function unsaved() {
+function unSubmitted() {
     $("#submit").addClass("unsaved")
+}
+function unSaved() {
+    project.saved = false;
+    window.onbeforeunload = confirmExit
+}
+function saved() {
+    project.saved = true;
+    window.onbeforeunload = null
 }
 
 project.on("keydown", "input, textarea", function() {
-    unsaved();
+    unSaved();
+    unSubmitted();
 })
 project.on("change", "select", function() {
-    unsaved();
+    unSaved();
+    unSubmitted();
 })
 project.on("click", ".component .new-statement", function() {
     const parent = $(this).parent().children(".component-statements");
@@ -195,10 +205,12 @@ project.on("click", ".component .new-statement", function() {
 })
 project.on("click", ".component .delete-statement", function() {
     $(this).parent().remove();
-    unsaved();
+    unSubmitted();
+    unSaved()
 })
 project.on("click", ".remove-btn", function() {
     const component = $(this).parent().parent(".component")
+    const s = false;
     if(project.selected != null && (component.attr("id") == project.selected.attr("id"))) {
         project.selected = null; //Active component was deleted
     }
@@ -206,10 +218,15 @@ project.on("click", ".remove-btn", function() {
     if(parents.length) {
         if($(parents[0]).children(".component").length == 1) {
             $(parents[0]).find(".no-components").show()
+            saved();
+            s = true;
         }
     }
     component.remove()
-    unsaved();
+    unSubmitted();
+    if(!s) {
+        unSaved()
+    }
 })
 
 project.on("change", "input[type='file']", function(e) {
@@ -229,6 +246,8 @@ project.on("change", "input[type='file']", function(e) {
     }
 
     reader.readAsDataURL(file);
+    unSaved();
+    unSubmitted();
 })
 
 project.on("click", ".input-row .input .icon", function() {
@@ -278,14 +297,13 @@ function uploadJson(json) {
             }
         }
     }
-    window.history.replaceState(null, null, "?token=" + getUrlParam("token"));
     $("#project .active").removeClass("active")
 }
 $("#upload-selector").on("change", function(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
-        unsaved();
+        unSubmitted();
         let data = JSON.parse(event.currentTarget.result);
         if(typeof data == "string") {
             data = JSON.parse(data);
@@ -748,7 +766,7 @@ $("#methods .component").on("click", function(e) {
 
     const methodName = $(this).attr("data-name");
     project.addMethod(methodName);
-
+    unSaved()
 })
 
 //Add event to project from sidebar
@@ -760,6 +778,7 @@ $("#events .component").on("click", function(e) {
     const eventName = $(this).attr("data-name");
     $(".active").removeClass("active");
     project.addEvent(eventName);
+    unSaved()
 
 })
 
@@ -1127,8 +1146,7 @@ $("#bot-form").on("submit", function(e) {
 
     return false;
 })
-//window.onbeforeunload = confirmExit;
-//function confirmExit()
-//{
-//    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
-//}
+function confirmExit()
+{
+    return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+}

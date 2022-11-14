@@ -11,7 +11,7 @@ router.get("/bot/:id", (req, res) => {
     const id = req.params.id;
     api.getBot(id, (response) => {
         if(!response) {
-            responses.not_found(res);
+            responses.not_found(res, "Bot was not found");
             return;
         }
         if(response["public"]) {

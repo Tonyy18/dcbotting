@@ -140,6 +140,9 @@ $("#login-form").on("submit", function(e) {
         localStorage.setItem("jwt", results["message"]);
         closeModal("login-modal");
         setLoggedInUI();
+        getBot(function(json, botParam) {
+            uploadJson(json);
+        })
     }, (error) => {
         $(errorDom).text(error["message"]).css("display", "block");
     })

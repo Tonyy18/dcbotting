@@ -9,7 +9,7 @@ class Validator {
         return true;
     }
     static email(text) {
-        const val = String(email)
+        const val = String(text)
                 .toLowerCase()
                 .match(
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -26,6 +26,7 @@ class Validator {
         if(text > 50) {
             return "password is too long"
         }
+        return true;
     }
     static name(text) {
         if(text.length > 50) {

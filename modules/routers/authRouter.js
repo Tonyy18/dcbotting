@@ -14,14 +14,20 @@ Router.post("/register", function(req, res) {
         }
     }
 
-    for(key in req.body) {
-        if(key in keysToValidators) {
-            const valid = keysToValidators[key](req.body[key]);
-            if(valid !== true) {
-                responses.bad_request(res, valid);
-                return;
-            }
-        }
+    let valid = Validator.username(req.body.username);
+    if(valid !== true) {
+        responses.bad_request(res, valid);
+        return;
+    }
+    valid = Validator.email(req.body.email);
+    if(valid !== true) {
+        responses.bad_request(res, valid);
+        return;
+    }
+    valid = Validator.password(req.body.password);
+    if(valid !== true) {
+        responses.bad_request(res, valid);
+        return;
     }
 
     if(req.body.password != req.body.password2) {
