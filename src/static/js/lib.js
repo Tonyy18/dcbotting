@@ -932,15 +932,15 @@ function getBot(callback = null, error = null) {
     }
 }
 
-function getToken(callback = null) {
+function getToken(callback = null, use_url=true) {
 	const tokenParam = getUrlParam("token");
 	const tokenInput = document.getElementById("tokenInput");
-	if(tokenParam) {
+	if(tokenParam && use_url) {
 		tokenInput.value = tokenParam;
         callback(tokenParam)
         return;
 	}
-    if(!tokenParam) {
+    if(!tokenParam || !use_url) {
         tokenModal()
     }
     const tokenForm = document.getElementById("token-form")

@@ -229,21 +229,22 @@ class Bot {
 
 }
 
-getToken(function(token) {
-    setTimeout(function() {
-        getBot(function(json, botParam) {
-            uploadJson(json)
-            window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
-        }, function(error, botParam) {
-            if(error != null) {
+function init_token(use_url=true) {
+    //Will reset the bot
+    //use_url = use the token in url param if exists
+    getToken(function(token) {
+        setTimeout(function() {
+            getBot(function(json, botParam) {
+                uploadJson(json)
                 window.history.replaceState(null, null, "?token=" + token + "&bot=" + botParam);
-            } else {
+            }, function(error, botParam) {
                 window.history.replaceState(null, null, "?token=" + token);
-            }
-        });
-        init(token)
-    }, 1000);
-})
+            });
+            init(token)
+        }, 1000);
+    },use_url)
+}
+init_token(true);
 
 function init(token) {
 
@@ -265,6 +266,12 @@ function init(token) {
         if(code >= 4000) {
             //Should be resumed to retriece missed events during the down time
             Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
+            if(code == 4004) {
+                //Authentication failed. Ask for new token
+                setTimeout(function() {
+                    init_token(false);
+                }, 1000)
+            }
         } else {
             Logger.error("Connection closed");
             bot.reconnect();
