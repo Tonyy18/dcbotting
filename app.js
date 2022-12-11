@@ -14,6 +14,7 @@ const authRouter = require("./modules/routers/authRouter");
 const apiRouter = require("./modules/routers/apiRouter");
 const accountRouter = require("./modules/routers/accountRouter");
 
+
 app.use("", indexRouters);
 
 app.get("/static/*", (req, res) => {

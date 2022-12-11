@@ -106,48 +106,25 @@ $("#register-form").on("submit", function(e) {
     return false;
 })
 
-function setLoggedInUI() {
-    $("#form-buttons").hide();
-    $("#logout-buttons").show();
-    project.notice.show("Successfully logged in");
-}
+function setupLoginForm(success=()=>{}, error=()=>{}) {
 
-Requests.ping(function(res) {
-    setLoggedInUI();
-}, function(error) {
-    if(error.code == 440) {
-        project.notice.show("Login session has been expired");
-    }
-    logoutUi();
-})
-
-function logoutUi() {
-    $("#form-buttons").show();
-    $("#logout-buttons").hide();
-    logout();
-}
-
-$("#login-form").on("submit", function(e) {
-    e.preventDefault();
-    const errorDom = $(this).find(".main-error");
-    errorDom.hide();
-    const email = $.trim($(this).find("[name='email']").val());
-    const password = $.trim($(this).find("[name='password']").val());
-    Requests.login({
-        email: email,
-        password: password
-    }, (results) => {
-        localStorage.setItem("jwt", results["message"]);
-        closeModal("login-modal");
-        setLoggedInUI();
-        getBot(function(json, botParam) {
-            uploadJson(json);
+    $("#login-form").on("submit", function(e) {
+        e.preventDefault();
+        const errorDom = $(this).find(".main-error");
+        errorDom.hide();
+        const email = $.trim($(this).find("[name='email']").val());
+        const password = $.trim($(this).find("[name='password']").val());
+        Requests.login({
+            email: email,
+            password: password
+        }, (results) => {
+            localStorage.setItem("jwt", results["message"]);
+            closeModal("login-modal");
+            success();
+        }, (err) => {
+            $(errorDom).text(err["message"]).css("display", "block");
+            error();
         })
-    }, (error) => {
-        $(errorDom).text(error["message"]).css("display", "block");
+        return false;
     })
-    return false;
-})
-$("#logout-btn").click(function() {
-    logoutUi();
-})
+}

@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+@font-face {
+    font-family: "Whitney-black";
+    src: url(../fonts/whitneybold.otf)
+}
+@font-face {
+    font-family: "Whitney-medium";
+    src: url(../fonts/whitneysemibold.otf)
+}
+* {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: "Whitney-medium";
+    color: white;
+    position: relative;
+}
 :root {
     --main-blue: #7289DA;
     --main-white: #FFFFFF;
@@ -5,6 +24,11 @@
     --main-dark: #2C2F33;
     --main-black: #23272A;
     --notice-color: #273649;
+}
+body,html {
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
 }
 input[type=text].input,
 input[type=password].input {
@@ -55,7 +79,34 @@ input[type=submit] {
     color: white;
     background-color: transparent;
 }
-
+select {
+    height: 45px;
+}
+input.error,
+textarea.error {
+    border: 1px solid red;
+    color: red;
+}
+input[type=submit],
+.btn-default {
+    color: white;
+    text-align: center;
+    background-color: var(--main-blue);
+    border: none;
+    border-radius: 5px;
+    line-height: 50px;
+    outline: none;
+}
+input[type=text]:hover,
+input[type=text]:focus,
+input[type=number]:hover,
+input[type=number]:focus,
+input[type=password]:hover,
+input[type=password]:focus
+textarea:hover,
+textarea:focus {
+    border: 1px solid #7289DA;
+}
 .notice {
     position: absolute;
     bottom: 20px;
@@ -68,4 +119,121 @@ input[type=submit] {
 .notice p {
     color: white;
     font-size: 15px;
+}
+h1,
+.bold {
+    font-family: "Whitney-black";
+    font-size: 25px;
+    display: inline-block;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select {
+    background-color: var(--main-black);
+    color: white;
+    border: 1px solid #99AAB5;
+    border-radius: 5px;
+    padding: 0 20px;
+    outline: none;
+    line-height: 45px;
+}
+textarea {
+    background-color: var(--main-black);
+    width: 100%;
+    border: 1px solid #99AAB5;
+    resize: vertical;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+}
+.module {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 1000;
+}
+.module.open .module-padding {
+    top: 100px;
+}
+.module .module-background {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    transition: opacity 1s;
+}
+.module .module-padding {
+    padding: 10px;
+    position: absolute;
+    top: -500px;
+    transition: top 0.5s;
+}
+.module.module-600 .module-padding {
+    width: 600px;
+    left: calc(50% - 300px);
+}
+.module.module-350 .module-padding {
+    width: 350px;
+    left: calc(50% - 350px / 2);
+}
+.module .module-body {
+    background-color: var(--main-dark);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+}
+
+.module .module-body header.header-small {
+    padding: 30px;
+    font-size: 16px;
+}
+.module .module-body header.header-big {
+    padding: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+.module .module-body .module-content {
+    padding: 30px;
+    padding-top: 0px;
+}
+.module .module-body .module-content p {
+    margin-bottom: 20px;
+}
+.module input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.module .main-error {
+    text-align: center;
+    display: none;
+}
+.module input[type=submit] {
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    -moz-transition: background-color 0.3s;
+}
+.module input[type=submit]:hover {
+    background-color: #536399;
+}
+.module .module-footer {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+.module .module-footer p {
+    margin-bottom: 0px !important;
+    flex-grow: 1;
+}
+.module .module-footer span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.module .module-body form {
+    text-align: center;
+}
+.module .module-body .loader {
+    height: 40px;
 }

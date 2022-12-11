@@ -1,3 +1,33 @@
+function setLoggedInUI() {
+    $("#form-buttons").hide();
+    $("#logout-buttons").show();
+    project.notice.show("Successfully logged in");
+}
+
+function logoutUi() {
+    $("#form-buttons").show();
+    $("#logout-buttons").hide();
+    logout();
+}
+
+isLoggedIn(function() {
+    setLoggedInUI();
+}, function(err) {
+    if(err.code == 440) {
+        project.notice.show("Login session has been expired");
+    }
+    logoutUi();
+})
+setupLoginForm(() => {
+    setLoggedInUI();
+    getBot(function(json, botParam) {
+        uploadJson(json);
+    })
+})
+$("#logout-btn").click(function() {
+    logoutUi();
+})
+
 let bot = null;
 
 const StatementOptions = {
