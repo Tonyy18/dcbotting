@@ -73,7 +73,7 @@ class Bot {
     }
 
     send(payload) {
-        if(typeof this.socket == "undefined" || this.open == false) {
+        if(typeof this.socket == "undefined") {
             Logger.error("Sending a payload failed. Connection is closed");
             return
         }
@@ -259,7 +259,6 @@ function init(token) {
     bot.onclose = function(event) {
         const code = event.code;
         bot.open = false
-        console.log(bot.lastMessage);
         status("offline");
         if(code >= 4000) {
             //Should be resumed to retriece missed events during the down time
@@ -271,10 +270,10 @@ function init(token) {
                     init_token(false);
                 }, 1000)
             }
-        } else {
-            Logger.error("Connection closed");
-            bot.reconnect();
-        }
+        } //else {
+            //Logger.error("Connection closed");
+            //bot.reconnect();
+        //}
     }
     
     bot.onmessage = function(event) {
