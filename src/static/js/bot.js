@@ -70,6 +70,7 @@ class Bot {
             "d": this.s
         }
         this.send(payload)
+        Logger.log("Heartbeat sent")
     }
 
     send(payload) {
@@ -303,6 +304,7 @@ function init(token) {
         if(op == 1) {
             //Server asks for a heartbeat
             bot.sendHeartbeat();
+            Logger.log("Discord asked for heartbeat")
         }
 
         if(op == 7) {
