@@ -944,8 +944,9 @@ function getToken(callback = null, use_url=true) {
         tokenModal()
     }
     const tokenForm = document.getElementById("token-form")
-    
-    tokenForm.addEventListener("submit", function(e) {
+
+    function tokenSubmit(e) {
+        console.log("submitted")
         e.preventDefault();
         const token = tokenInput.value
         if(token) {
@@ -953,7 +954,10 @@ function getToken(callback = null, use_url=true) {
             if(callback) callback(token);
             localStorage.setItem("token", token);
         }
-    })  
+        tokenForm.removeEventListener("submit", tokenSubmit)
+    }
+
+    tokenForm.addEventListener("submit", tokenSubmit)  
 }
 
 // ---------------- CONSOLE ----------------

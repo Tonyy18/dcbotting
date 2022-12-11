@@ -28,7 +28,6 @@ class Bot {
         this.events = {}
         this.submitted = {}
         this.inviteLink = null;
-
     }
     setInviteLink(link) {
         this.inviteLink = link;
@@ -226,7 +225,6 @@ class Bot {
 
         return results;
     }
-
 }
 
 function init_token(use_url=true) {
@@ -268,6 +266,7 @@ function init(token) {
             Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
             if(code == 4004) {
                 //Authentication failed. Ask for new token
+                bot.disconnect();
                 setTimeout(function() {
                     init_token(false);
                 }, 1000)
