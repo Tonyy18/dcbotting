@@ -12,7 +12,7 @@ const auth = require("./modules/auth");
 const indexRouters = require("./modules/routers/indexRouter");
 const authRouter = require("./modules/routers/authRouter");
 const apiRouter = require("./modules/routers/apiRouter");
-const profileRouter = require("./modules/routers/profileRouter");
+const accountRouter = require("./modules/routers/accountRouter");
 
 app.use("", indexRouters);
 
@@ -22,7 +22,7 @@ app.get("/static/*", (req, res) => {
 
 app.use("/api", apiRouter);
 app.use("/auth", authRouter);
-app.use("/profile", profileRouter);
+app.use("/account", accountRouter);
 app.use(auth.jwt_middleware);
 app.post("/ping", function(req, res) {
     res.sendStatus(200)
