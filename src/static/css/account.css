@@ -1,3 +1,67 @@
 body {
     background-color: var(--main-dark);
 }
+body > header {
+    border-bottom: 1px solid #1F2224;
+    height: 70px;
+}
+body > header > .container {
+    display: flex;
+    align-items: center;
+}
+body > header .container .header-left {
+    flex-grow: 1;
+}
+.inline-menu a {
+    border-radius: 10px;
+}
+.inline-menu a:hover {
+    background-color: #1F2224;
+}
+body > .container {
+    height: calc(100% - 70px);
+}
+
+section > h1 {
+    line-height: 80px;
+}
+section .content .loader {
+    height: 40px;
+}
+section .content {
+    font-size: 0px;
+}
+.bot-card {
+    width: 143.333px;
+    background-color: #1F2224;
+    height: 180px;
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-block;
+    margin: 10px;
+}
+.bot-card .image-holder {
+    background-color: white;
+    width: 80%;
+    padding-top: 80%;
+    position: relative;
+    margin: 0 auto;
+    border-radius: 100%;
+    margin-bottom: 15px;
+}
+.bot-card .image-holder img {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    border-radius: 100%;
+    left: 0px;
+}
+.bot-card .name {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+}
+.bot-card .name:hover {
+    text-decoration: underline;
+}

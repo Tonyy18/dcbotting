@@ -14,7 +14,9 @@ const authRouter = require("./modules/routers/authRouter");
 const apiRouter = require("./modules/routers/apiRouter");
 const accountRouter = require("./modules/routers/accountRouter");
 
-
+app.get("/favicon.ico", function(req, res) {
+    res.sendFile(__dirname + "/src/static/images/favicon.ico");
+})
 app.use("", indexRouters);
 
 app.get("/static/*", (req, res) => {

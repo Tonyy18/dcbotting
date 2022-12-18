@@ -113,6 +113,14 @@ class Requests {
         })
     }
 
+    static getBotsByUserId(id, callback, error) {
+        authRequest("/api/user/" + id + "/bots", "get", "", (res) => {
+            callback(res)
+        }, (err) => {
+            error(getResponse(err));
+        })
+    }
+
     static updateBot(id, data, callback, error) {
         authRequest("/api/bot/" + id, "put", data, (res) => {
             callback(res);
@@ -126,13 +134,13 @@ function showModal(id, closable = true) {
     const modal = $("#" + id);
     modal.fadeIn();
     modal.addClass("open");
+    modal.find("[data-changeto]").off("click").on("click", function() {
+        closeModal(id);
+        showModal($(this).attr("data-changeTo"), closable);
+    })
     if(closable) {
         modal.children(".module-background").on("click", function() {
             closeModal(id);
-        })
-        modal.find("[data-changeto]").off("click").on("click", function() {
-            closeModal(id);
-            showModal($(this).attr("data-changeTo"));
         })
     } else {
         modal.children(".module-background").off("click")

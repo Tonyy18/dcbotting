@@ -8,6 +8,14 @@ let getBot = (id, callback, error) => {
     })
 }
 
+let getBotsByUserId = (id, callback, error) => {
+    db.query("SELECT * FROM bots WHERE creator='" + id + "'", (result) => {
+        callback(result)
+    }, (err) => {
+        error(err);
+    })
+}
+
 let saveBot = (owner, name, data, callback, error) => {
     db.query("INSERT INTO bots (creator,name,data) VALUES(" + owner + ", '" + name + "', '" + data + "')", (results) => {
         callback(results);
@@ -36,3 +44,4 @@ let updateBot = (id, data, callback, error=() => {}) => {
 exports.getBot = getBot;
 exports.saveBot = saveBot;
 exports.updateBot = updateBot;
+exports.getBotsByUserId = getBotsByUserId

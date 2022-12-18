@@ -29,7 +29,7 @@ class Validator {
         return true;
     }
     static name(text) {
-        if(text.length > 50) {
+        if(text.length > 30) {
             return "bot name is too long"
         }
         if(text.length < 2) {

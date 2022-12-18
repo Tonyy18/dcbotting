@@ -120,7 +120,7 @@ function setupLoginForm(success=()=>{}, error=()=>{}) {
         }, (results) => {
             localStorage.setItem("jwt", results["message"]);
             closeModal("login-modal");
-            success();
+            success(results);
         }, (err) => {
             $(errorDom).text(err["message"]).css("display", "block");
             error();

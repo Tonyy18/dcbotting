@@ -1,0 +1,1 @@
+module.exports.defaultAvatar = "/static/images/avatar.jpg"

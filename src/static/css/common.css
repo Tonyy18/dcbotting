@@ -237,3 +237,38 @@ textarea {
 .module .module-body .loader {
     height: 40px;
 }
+
+.container {
+    width: 1000px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+.logo img {
+    height: 35px;
+    width: 35px;
+    display: inline-block;
+    margin-right: 5px;
+}
+ul {
+    font-size: 0px;
+}
+.inline-menu li {
+    display: inline-block;
+}
+.inline-menu li a {
+    padding: 10px;
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.cut-text {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+}

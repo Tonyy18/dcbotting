@@ -8,6 +8,7 @@ const auth = require("../auth");
 const common = require("../common");
 
 router.get("/bot/:id", (req, res) => {
+    //Get bot by id
     const id = req.params.id;
     api.getBot(id, (response) => {
         if(!response) {
@@ -26,6 +27,15 @@ router.get("/bot/:id", (req, res) => {
                 }
             })
         }
+    }, (err) => {
+        responses.internal_server_error(res);
+    })
+})
+router.get("/user/:id/bots", (req, res) => {
+    //get users bot
+    const id = req.params.id;
+    api.getBotsByUserId(id, (response) => {
+        responses.ok(res, response)
     }, (err) => {
         responses.internal_server_error(res);
     })
