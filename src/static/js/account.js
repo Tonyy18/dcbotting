@@ -1,18 +1,21 @@
 const botsContent = $("#bots-content");
 function setupLoginUi() {
-    const data = getJwtPayload();
-    Requests.getBotsByUserId(data.id, function(res) {
-        const bots = res["message"];
-        botsContent.empty();
-        for(let a = 0; a < bots.length; a++) {
-            const id = bots[a]["id"];
-            const name = bots[a]["name"];
-            const picture = bots[a]["picture"];
-            const dom = createBotCard(id, name, picture);
-            botsContent.append(dom);
-            console.log(name);
-        }
-    })
+    setTimeout(function() {
+        const data = getJwtPayload();
+        Requests.getBotsByUserId(data.id, function(res) {
+            const bots = res["message"];
+            botsContent.empty();
+            for(let a = 0; a < bots.length; a++) {
+                const id = bots[a]["id"];
+                const name = bots[a]["name"];
+                const picture = bots[a]["picture"];
+                const dom = createBotCard(id, name, picture);
+                dom.hide();
+                botsContent.append(dom);
+                dom.fadeIn();
+            }
+        })
+    },1500);
 }
 setupLoginForm(function(e) {
     setupLoginUi();
