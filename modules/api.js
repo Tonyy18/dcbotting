@@ -17,7 +17,7 @@ let getBotsByUserId = (id, callback, error) => {
 }
 
 let saveBot = (owner, name, data, callback, error) => {
-    db.query("INSERT INTO bots (creator,name,data,picture) VALUES(" + owner + ", '" + name + "', '" + data + "', '" + constants.defaultAvatar + ")", (results) => {
+    db.query("INSERT INTO bots (creator,name,data,picture) VALUES(" + owner + ", '" + name + "', '" + data + "', '" + constants.defaultAvatar + "')", (results) => {
         callback(results);
     }, (err) => {
         error(err);
