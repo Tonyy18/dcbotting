@@ -261,9 +261,9 @@ function init(token) {
         const code = event.code;
         bot.open = false
         status("offline");
+        Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
         if(code >= 4000) {
             //Should be resumed to retriece missed events during the down time
-            Logger.error("Connection closed because: " + event.reason + " (" + code + ") ")
             if(code == 4004) {
                 //Authentication failed. Ask for new token
                 bot.disconnect();
