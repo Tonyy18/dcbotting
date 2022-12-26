@@ -1,8 +1,13 @@
 class Notice {
     constructor(dom) {
         this.dom = $(dom);
+        this.queue = []
     }
     show(text) {
+        if(this.dom.is(":visible")) {
+            this.queue.push(text)
+            return
+        }
         this.dom.children("p").html(text)
         this.dom.fadeIn();
         setTimeout(() => {
@@ -10,7 +15,13 @@ class Notice {
         }, 4000)
     }
     hide() {
-        this.dom.fadeOut();
+        this.dom.fadeOut(300, () => {
+            if(this.queue.length > 0) {
+                const toShow = this.queue[0]
+                this.queue.shift()
+                this.show(toShow)
+            }
+        });
     }
 }
 function getJwt() {

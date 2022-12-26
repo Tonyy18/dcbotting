@@ -549,25 +549,16 @@ function highlight(dom, duration = 2000) {
     }, duration)
 }
 
-function getMethods() {
-    return $.ajax({
-        url: "/api/methods",
-        async: false,
-    }).responseText
-}
-
-function getEvents() {
-    return $.ajax({
-        url: "/api/events",
-        async: false,
-    }).responseText
-}
-
 Requests.getMethods((res) => {
     loadComponents("methods", res["message"])
-    Requests.getEvents((res) => {
-        loadComponents("events", res["message"])
-    })
+}, function() {
+    project.notice.show("Error loading method components")
+})
+
+Requests.getEvents((res) => {
+    loadComponents("events", res["message"])
+}, function() {
+    project.notice.show("Error loading event components")
 })
 
 function toDisplayName(name) {

@@ -45,7 +45,7 @@ router.get("/events", (req, res) => {
     api.getEvents((results) => {
         responses.ok(res, results)
     }, (err) => {
-        responses.internal_server_error(err);
+        responses.internal_server_error(res);
     })
 })
 
@@ -53,7 +53,7 @@ router.get("/methods", (req, res) => {
     api.getMethods((results) => {
         responses.ok(res, results)
     }, (err) => {
-        responses.internal_server_error(err);
+        responses.internal_server_error(res);
     })
 })
 
