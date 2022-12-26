@@ -549,14 +549,17 @@ function highlight(dom, duration = 2000) {
     }, duration)
 }
 
+let methods = null;
 Requests.getMethods((res) => {
-    loadComponents("methods", res["message"])
+    methods = res["message"];
+    loadComponents("methods", methods)
 }, function() {
     project.notice.show("Error loading method components")
 })
-
+let events = null;
 Requests.getEvents((res) => {
-    loadComponents("events", res["message"])
+    events = res["message"];
+    loadComponents("events", events)
 }, function() {
     project.notice.show("Error loading event components")
 })
@@ -668,7 +671,6 @@ function buildStatementDom(inputs = true, count = 1) {
 }
 
 function buildEventDom(event, statements=true, values=null) {
-    
     const id = getRandom()
     let dom = $("<li class='component' id='" + id + "' data-type='event' data-name=" + event + "></li>");
 
