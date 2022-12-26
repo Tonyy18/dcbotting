@@ -77,6 +77,16 @@ function getResponse(res) {
     return res;
 }
 
+function key_data_response_to_object(res) {
+    const results = {}
+    const data = res["message"];
+    for(let a = 0; a < data.length; a++) {
+        results[data[a]["name"]] = JSON.parse(data[a]["data"])
+    }
+    res["message"] = results
+    return res;
+}
+
 class Requests {
     static ping(callback, error=()=>{}) {
         authRequest("/ping", "post", {}, (res) => {
@@ -126,6 +136,31 @@ class Requests {
             callback(res);
         }, (err) => {
             error(getResponse(err));
+        })
+    }
+
+    static getMethods(_success, _error, _async=true) {
+        $.ajax({
+            url: "/api/methods",
+            async: _async,
+            success: function(res) {
+                _success(key_data_response_to_object(res))
+            },
+            error: function(res) {
+                _error(res)
+            }
+        })
+    }
+    static getEvents(_success, _error, _async=true) {
+        $.ajax({
+            url: "/api/events",
+            async: _async,
+            success: function(res) {
+                _success(key_data_response_to_object(res))
+            },
+            error: function(res) {
+                _error(res)
+            }
         })
     }
 }
