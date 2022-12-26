@@ -549,22 +549,17 @@ function highlight(dom, duration = 2000) {
     }, duration)
 }
 
-function getMethods() {
-    return $.ajax({
-        url: "/api/methods",
-        async: false,
-    }).responseText
-}
+Requests.getMethods((res) => {
+    loadComponents("methods", res["message"])
+}, function() {
+    project.notice.show("Error loading method components")
+})
 
-function getEvents() {
-    return $.ajax({
-        url: "/api/events",
-        async: false,
-    }).responseText
-}
-
-const events = JSON.parse(getEvents());
-const methods = JSON.parse(getMethods());
+Requests.getEvents((res) => {
+    loadComponents("events", res["message"])
+}, function() {
+    project.notice.show("Error loading event components")
+})
 
 function toDisplayName(name) {
     // message_create to Message Create
@@ -576,13 +571,12 @@ function toDisplayName(name) {
     return display
 }
 
-function loadComponents(_methods = false) {
+function loadComponents(type = null, obj) {
     //Loads components to each sidebar
     let sidebar = $("#events");
-    let obj = events;
-    if(_methods == true) {
+    if(type == "methods") {
+        //else events
         sidebar = $("#methods");
-        obj = methods;
     }
     for(component in obj) {
         const dom = $("<li class='component' data-name='" +  component + "'></li>")
@@ -602,10 +596,7 @@ function loadComponents(_methods = false) {
         dom.prepend(visual);
         sidebar.append(dom);
     }
-    if(_methods == false) loadComponents(true); 
 }
-
-loadComponents();
 
 function buildTextInput(value="", placeholder="", name="") {
     //Text input

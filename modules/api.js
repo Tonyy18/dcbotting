@@ -41,6 +41,23 @@ let updateBot = (id, data, callback, error=() => {}) => {
     })
 }
 
+let getMethods = (success, error) => {
+    db.query("SELECT * FROM methods ORDER BY name", (results) => {
+        success(results)
+    }, (err) => {
+        error(err)
+    })
+}
+let getEvents = (success, error) => {
+    db.query("SELECT * FROM events ORDER BY name", (results) => {
+        success(results)
+    }, (err) => {
+        error(err)
+    })
+}
+
+exports.getEvents = getEvents
+exports.getMethods = getMethods
 exports.getBot = getBot;
 exports.saveBot = saveBot;
 exports.updateBot = updateBot;

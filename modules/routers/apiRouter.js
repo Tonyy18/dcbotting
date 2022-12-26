@@ -42,13 +42,19 @@ router.get("/user/:id/bots", (req, res) => {
 })
 
 router.get("/events", (req, res) => {
-    res.set("content-type", "application/json")
-    res.sendFile(parentDir + "/data/events.json")
+    api.getEvents((results) => {
+        responses.ok(res, results)
+    }, (err) => {
+        responses.internal_server_error(res);
+    })
 })
 
 router.get("/methods", (req, res) => {
-    res.set("content-type", "application/json")
-    res.sendFile(parentDir + "/data/methods.json")
+    api.getMethods((results) => {
+        responses.ok(res, results)
+    }, (err) => {
+        responses.internal_server_error(res);
+    })
 })
 
 router.use(auth.jwt_middleware);
