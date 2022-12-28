@@ -4,7 +4,8 @@
   "description": "Platform that provides an easier way to create and run discord bots",
   "main": "electron.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx cypress run",
+    "cypress:open": "npx cypress open",
     "start": "electron ."
   },
   "author": "Toni Isotalo",
@@ -21,6 +22,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "cypress": "^12.2.0",
     "electron": "^19.0.8"
   }
 }
