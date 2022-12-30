@@ -1,9 +1,24 @@
+class ValidatorValues {
+    static username = {
+        minLength: 2,
+        maxLength: 20
+    }
+    static password = {
+        minLength: 6,
+        maxLength: 50
+    }
+    static name = {
+        minLength: 2,
+        maxLength: 30
+    }
+}
+
 class Validator {
     static username(text) {
-        if(text < 2) {
+        if(text < ValidatorValues.username.minLenth) {
             return "username is too short"
         }
-        if(text > 20) {
+        if(text > ValidatorValues.username.maxLength) {
             return "username is too long"
         }
         return true;
@@ -20,19 +35,19 @@ class Validator {
         return true;
     }
     static password(text) {
-        if(text < 6) {
+        if(text < ValidatorValues.password.minLenth) {
             return "password is too short"
         }
-        if(text > 50) {
+        if(text > ValidatorValues.password.maxLength) {
             return "password is too long"
         }
         return true;
     }
     static name(text) {
-        if(text.length > 30) {
+        if(text.length > ValidatorValues.name.minLenth) {
             return "bot name is too long"
         }
-        if(text.length < 2) {
+        if(text.length < ValidatorValues.name.maxLength) {
             return "bot name is too short";
         }
         return true;
@@ -46,3 +61,4 @@ const keysToValidators = {
 }
 exports.Validator = Validator;
 exports.keysToValidators = keysToValidators;
+exports.ValidatorValues = ValidatorValues

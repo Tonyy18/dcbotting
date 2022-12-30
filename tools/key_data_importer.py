@@ -115,9 +115,8 @@ def run():
     objects = getObjects()
     for o in objects:
         imported = importChanges(o)
-        if(type(imported) is mysql.connector.errors.ProgrammingError):
-            print("Sql syntax error in the following query: ")
-            print(getSqlSyntax(o))
+        if(imported == False):
+            print("Error while trying to import")
             return
 
 if(len(sys.argv) > 1):
