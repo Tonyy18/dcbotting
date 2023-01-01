@@ -7,9 +7,7 @@ function setLoggedInUI() {
 function logoutUi() {
     $("#form-buttons").show();
     $("#logout-buttons").hide();
-    logout();
 }
-
 isLoggedIn(function() {
     setLoggedInUI();
 }, function(err) {
@@ -23,9 +21,14 @@ setupLoginForm(() => {
     setLoggedInUI();
     getBot(function(json, botParam) {
         uploadJson(json);
-    })
+    });
 })
 $("#logout-btn").click(function() {
+    logout();
+    if(project.botLoaded && !project.botLoaded["public"]) {
+        project.clear();
+    }
+    project.notice.show("You are now logged out")
     logoutUi();
 })
 
@@ -62,6 +65,10 @@ project.botLoaded = null;
 project.notice = new Notice("#project-notice");
 project.saved = true;
 const projectWrapper = document.getElementById("projectWrapper")
+project.clear = function() {
+    project.botLoaded = null;
+    project.empty();
+}
 project.addEvent = function(event) {
     const found = project.find(".component[data-name='" + event + "']")
     if(found.length) {
@@ -1056,6 +1063,14 @@ $("[data-closeModal]").click(function() {
     closeModal($(this).attr("data-closeModal"))
 })
 
+function changesInProject() {
+    const json = projectToJson();
+    if(project.botLoaded && $.trim(JSON.stringify(json["data"])) == $.trim(JSON.stringify(project.botLoaded["data"]["data"]))) {
+        return true;
+    }
+    return false
+}
+
 $("#save-btn").click(function(e) {
     const json = projectToJson();
     if(!json ) {
@@ -1068,11 +1083,11 @@ $("#save-btn").click(function(e) {
         return;
     }
 
-    if($.trim(JSON.stringify(json["data"])) == $.trim(JSON.stringify(project.botLoaded["data"]["data"]))) {
-        project.notice.show("No changes to save")
-        return;
-    }
     if(project.botLoaded && project.botLoaded != null && project.botLoaded["creator"] == getJwtPayload()["id"]) {
+        if(changesInProject()) {
+            project.notice.show("No changes to save")
+            return;
+        }
         Requests.updateBot(project.botLoaded["id"], {
             data: JSON.stringify(json)
         }, (results) => {

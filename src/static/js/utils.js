@@ -12,7 +12,7 @@ class Notice {
         this.dom.fadeIn();
         setTimeout(() => {
             this.hide();
-        }, 4000)
+        }, 2500)
     }
     hide() {
         this.dom.fadeOut(300, () => {

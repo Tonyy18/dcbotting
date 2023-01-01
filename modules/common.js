@@ -1,9 +1,9 @@
 class Validator {
     static username(text) {
-        if(text < 2) {
+        if(text.length < 2) {
             return "username is too short"
         }
-        if(text > 20) {
+        if(text.length > 20) {
             return "username is too long"
         }
         return true;
@@ -20,10 +20,10 @@ class Validator {
         return true;
     }
     static password(text) {
-        if(text < 6) {
+        if(text.length < 6) {
             return "password is too short"
         }
-        if(text > 50) {
+        if(text.length > 50) {
             return "password is too long"
         }
         return true;
