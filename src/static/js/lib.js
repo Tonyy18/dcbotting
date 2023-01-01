@@ -42,7 +42,6 @@ const StatementOptions = {
         return val1.includes(val2)
     },
     "starts with": function(val1, val2) {
-        console.log(val1.substring(0, val2.length))
         return val1.substring(0, val2.length) == val2;
     },
     "ends with": function(val1, val2) {
@@ -851,7 +850,6 @@ servers.add = function(server) {
 servers.update = function(server, content="Updated") {
     const dom = servers.find("#" + server.id);
     dom.find(".text").html(server.name);
-    console.log(server)
     dom.find("[data-value='id']").html(server.id);
     dom.find("[data-value='owner']").html(server.owner_id);
     dom.find("[data-value='region']").html(server.region);
@@ -917,9 +915,10 @@ function getBot(callback = null, error = null) {
     if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
             project.botLoaded = result["message"];
+            project.botLoaded["data"] = JSON.parse(project.botLoaded["data"]);
             project.notice.show(result["message"]["name"] + " loaded")
             Logger.success('Bot "' + result["message"]["name"] + '" loaded successfully', )
-            callback(JSON.parse(result["message"]["data"]), botParam)
+            callback(project.botLoaded["data"], botParam)
         }, (result) => {
             project.notice.show(result["message"]);
             if(error && typeof error == "function") {
@@ -945,7 +944,6 @@ function getToken(callback = null, use_url=true) {
     const tokenForm = document.getElementById("token-form")
 
     function tokenSubmit(e) {
-        console.log("submitted")
         e.preventDefault();
         const token = tokenInput.value
         if(token) {
@@ -1060,7 +1058,6 @@ $("[data-closeModal]").click(function() {
 
 $("#save-btn").click(function(e) {
     const json = projectToJson();
-    console.log(json)
     if(!json ) {
         project.notice.show("Cannot save empty project");
         return;
@@ -1068,6 +1065,11 @@ $("#save-btn").click(function(e) {
     const jwt = getJwt();
     if(!jwt) {
         showModal("login-modal");
+        return;
+    }
+
+    if($.trim(JSON.stringify(json["data"])) == $.trim(JSON.stringify(project.botLoaded["data"]["data"]))) {
+        project.notice.show("No changes to save")
         return;
     }
     if(project.botLoaded && project.botLoaded != null && project.botLoaded["creator"] == getJwtPayload()["id"]) {
