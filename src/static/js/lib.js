@@ -241,7 +241,7 @@ project.on("click", ".component .delete-statement", function() {
 })
 project.on("click", ".remove-btn", function() {
     const component = $(this).parent().parent(".component")
-    const s = false;
+    let s = false;
     if(project.selected != null && (component.attr("id") == project.selected.attr("id"))) {
         project.selected = null; //Active component was deleted
     }
@@ -786,15 +786,14 @@ function buildMethodDom(name, values=null) {
 }
 
 //Add method to selected event
-$("#methods .component").on("click", function(e) {
-
+$("#methods").on("click", ".component", function(e) {
     const methodName = $(this).attr("data-name");
     project.addMethod(methodName);
     unSaved()
 })
 
 //Add event to project from sidebar
-$("#events .component").on("click", function(e) {
+$("#events").on("click", ".component", function(e) {
 
     if($(this).children(".component-dropdown").length != 0) return; //Dropdown
     
@@ -1061,7 +1060,8 @@ $("[data-closeModal]").click(function() {
 
 $("#save-btn").click(function(e) {
     const json = projectToJson();
-    if(json == undefined) {
+    console.log(json)
+    if(!json ) {
         project.notice.show("Cannot save empty project");
         return;
     }
@@ -1071,7 +1071,15 @@ $("#save-btn").click(function(e) {
         return;
     }
     if(project.botLoaded && project.botLoaded != null && project.botLoaded["creator"] == getJwtPayload()["id"]) {
-        $("#bot-modal [name='bot-name']").val(project.botLoaded["name"]);
+        Requests.updateBot(project.botLoaded["id"], {
+            data: JSON.stringify(json)
+        }, (results) => {
+            project.notice.show("Bot updated!")
+            project.botLoaded["data"] = json;
+        }, function(error) {
+            showSavingError(error);
+        })
+        return;
     }
     showModal("bot-modal");
 })
@@ -1080,7 +1088,7 @@ $("#bot-form").on("submit", function(e) {
     const json = projectToJson();
     const errorDom = $(this).find(".main-error");
     errorDom.hide();
-    if(json == undefined) {
+    if(!json) {
         project.notice.show("Cannot save empty project");
         closeModal("bot-modal");
         return false;
@@ -1123,26 +1131,6 @@ $("#bot-form").on("submit", function(e) {
             setTimeout(function() {
                 document.location.href = href;
             }, 3000)
-        }, function(error) {
-            showSavingError(error);
-        })
-    } else {
-        Requests.updateBot(project.botLoaded["id"], {
-            name: name,
-            data: JSON.stringify(json)
-        }, (results) => {
-            showModalLoading();
-            errorDom.html("Updating bot: " + project.botLoaded["name"]).css("display", "block")
-            setTimeout(() => {
-                closeModal("bot-modal");
-                project.notice.show("Bot updated!")
-                setTimeout(() => {
-                    $(this).find("input").show();
-                    $(this).find(".loader").remove();
-                }, 1000)
-            }, 3000)
-            project.botLoaded["name"] = name;
-            project.botLoaded["data"] = json;
         }, function(error) {
             showSavingError(error);
         })
