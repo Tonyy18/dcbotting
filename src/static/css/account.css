@@ -61,7 +61,46 @@ section .content {
     display: block;
     text-decoration: none;
     text-align: center;
+    word-wrap: break-word;
 }
-.bot-card .name:hover {
-    text-decoration: underline;
+.bot-card:hover .card-hover {
+    display: flex;
+}
+.bot-card .card-hover {
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    border-radius: 10px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.bot-card .card-hover .bot-hover-btn {
+    display: block;
+    width: 100px;
+    text-align: center;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 5px 0;
+    text-decoration: none;
+    padding: 5px 0;
+    cursor: pointer;
+}
+.bot-card .card-hover .edit-bot-btn {
+    background-color: #00CC66;
+}
+.bot-card .card-hover .edit-bot-btn:hover {
+    background-color: #00A955;
+}
+.bot-card .card-hover .open-bot-btn {
+    background-color: var(--main-blue);
+}
+.bot-card .card-hover .open-bot-btn:hover {
+    background-color: var(--main-blue-hover);
 }

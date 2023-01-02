@@ -7,9 +7,7 @@ function setLoggedInUI() {
 function logoutUi() {
     $("#form-buttons").show();
     $("#logout-buttons").hide();
-    logout();
 }
-
 isLoggedIn(function() {
     setLoggedInUI();
 }, function(err) {
@@ -23,9 +21,14 @@ setupLoginForm(() => {
     setLoggedInUI();
     getBot(function(json, botParam) {
         uploadJson(json);
-    })
+    });
 })
 $("#logout-btn").click(function() {
+    logout();
+    if(project.botLoaded && !project.botLoaded["public"]) {
+        project.clear();
+    }
+    project.notice.show("You are now logged out")
     logoutUi();
 })
 
@@ -42,7 +45,6 @@ const StatementOptions = {
         return val1.includes(val2)
     },
     "starts with": function(val1, val2) {
-        console.log(val1.substring(0, val2.length))
         return val1.substring(0, val2.length) == val2;
     },
     "ends with": function(val1, val2) {
@@ -63,6 +65,10 @@ project.botLoaded = null;
 project.notice = new Notice("#project-notice");
 project.saved = true;
 const projectWrapper = document.getElementById("projectWrapper")
+project.clear = function() {
+    project.botLoaded = null;
+    project.empty();
+}
 project.addEvent = function(event) {
     const found = project.find(".component[data-name='" + event + "']")
     if(found.length) {
@@ -241,7 +247,7 @@ project.on("click", ".component .delete-statement", function() {
 })
 project.on("click", ".remove-btn", function() {
     const component = $(this).parent().parent(".component")
-    const s = false;
+    let s = false;
     if(project.selected != null && (component.attr("id") == project.selected.attr("id"))) {
         project.selected = null; //Active component was deleted
     }
@@ -786,15 +792,14 @@ function buildMethodDom(name, values=null) {
 }
 
 //Add method to selected event
-$("#methods .component").on("click", function(e) {
-
+$("#methods").on("click", ".component", function(e) {
     const methodName = $(this).attr("data-name");
     project.addMethod(methodName);
     unSaved()
 })
 
 //Add event to project from sidebar
-$("#events .component").on("click", function(e) {
+$("#events").on("click", ".component", function(e) {
 
     if($(this).children(".component-dropdown").length != 0) return; //Dropdown
     
@@ -852,7 +857,6 @@ servers.add = function(server) {
 servers.update = function(server, content="Updated") {
     const dom = servers.find("#" + server.id);
     dom.find(".text").html(server.name);
-    console.log(server)
     dom.find("[data-value='id']").html(server.id);
     dom.find("[data-value='owner']").html(server.owner_id);
     dom.find("[data-value='region']").html(server.region);
@@ -918,9 +922,10 @@ function getBot(callback = () => {}, error = () => {}) {
     if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
             project.botLoaded = result["message"];
+            project.botLoaded["data"] = JSON.parse(project.botLoaded["data"]);
             project.notice.show(result["message"]["name"] + " loaded")
             Logger.success('Bot "' + result["message"]["name"] + '" loaded successfully', )
-            callback(JSON.parse(result["message"]["data"]), botParam)
+            callback(project.botLoaded["data"], botParam)
         }, (result) => {
             project.notice.show(result["message"]);
             if(error && typeof error == "function") {
@@ -946,7 +951,6 @@ function getToken(callback = null, use_url=true) {
     const tokenForm = document.getElementById("token-form")
 
     function tokenSubmit(e) {
-        console.log("submitted")
         e.preventDefault();
         const token = tokenInput.value
         if(token) {
@@ -1059,9 +1063,17 @@ $("[data-closeModal]").click(function() {
     closeModal($(this).attr("data-closeModal"))
 })
 
+function changesInProject() {
+    const json = projectToJson();
+    if(project.botLoaded && $.trim(JSON.stringify(json["data"])) == $.trim(JSON.stringify(project.botLoaded["data"]["data"]))) {
+        return true;
+    }
+    return false
+}
+
 $("#save-btn").click(function(e) {
     const json = projectToJson();
-    if(json == undefined) {
+    if(!json ) {
         project.notice.show("Cannot save empty project");
         return;
     }
@@ -1070,8 +1082,21 @@ $("#save-btn").click(function(e) {
         showModal("login-modal");
         return;
     }
+
     if(project.botLoaded && project.botLoaded != null && project.botLoaded["creator"] == getJwtPayload()["id"]) {
-        $("#bot-modal [name='bot-name']").val(project.botLoaded["name"]);
+        if(changesInProject()) {
+            project.notice.show("No changes to save")
+            return;
+        }
+        Requests.updateBot(project.botLoaded["id"], {
+            data: JSON.stringify(json)
+        }, (results) => {
+            project.notice.show("Bot updated!")
+            project.botLoaded["data"] = json;
+        }, function(error) {
+            showSavingError(error);
+        })
+        return;
     }
     showModal("bot-modal");
 })
@@ -1080,7 +1105,7 @@ $("#bot-form").on("submit", function(e) {
     const json = projectToJson();
     const errorDom = $(this).find(".main-error");
     errorDom.hide();
-    if(json == undefined) {
+    if(!json) {
         project.notice.show("Cannot save empty project");
         closeModal("bot-modal");
         return false;
@@ -1123,26 +1148,6 @@ $("#bot-form").on("submit", function(e) {
             setTimeout(function() {
                 document.location.href = href;
             }, 3000)
-        }, function(error) {
-            showSavingError(error);
-        })
-    } else {
-        Requests.updateBot(project.botLoaded["id"], {
-            name: name,
-            data: JSON.stringify(json)
-        }, (results) => {
-            showModalLoading();
-            errorDom.html("Updating bot: " + project.botLoaded["name"]).css("display", "block")
-            setTimeout(() => {
-                closeModal("bot-modal");
-                project.notice.show("Bot updated!")
-                setTimeout(() => {
-                    $(this).find("input").show();
-                    $(this).find(".loader").remove();
-                }, 1000)
-            }, 3000)
-            project.botLoaded["name"] = name;
-            project.botLoaded["data"] = json;
         }, function(error) {
             showSavingError(error);
         })
