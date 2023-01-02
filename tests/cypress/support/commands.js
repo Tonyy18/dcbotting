@@ -58,3 +58,21 @@ Cypress.Commands.add("loginToUser", (email, password) => {
     cy.wait(2000)
     cy.get("#login-modal").should("not.be.visible")
 })
+Cypress.Commands.add("openEventsTab", () => {
+    cy.get("header[for='events']").click()
+})
+Cypress.Commands.add("addEvent", (name) => {
+    cy.openEventsTab();
+    cy.get("#events .component[data-name='" + name + "']").click();
+    cy.get("#project .component[data-name='" + name + "']").should("be.visible").should("have.class", "active")
+    cy.get("#project .component[data-name='" + name + "'] .component-dropdown").should("be.visible")
+})
+Cypress.Commands.add("removeEventFromProject", (name) => {
+    cy.get("#project .component[data-name='" + name + "']").should("be.visible").click();
+    cy.get("#project .component[data-name='" + name + "']").should("have.class", "active");
+    cy.get("#project .component[data-name='" + name + "'].active .component-visual .remove-btn").click();
+    cy.get("#project .component[data-name='" + name + "']").should("not.exist")
+})
+Cypress.Commands.add("openMethodsTab", () => {
+    cy.get("header[for='methods']").click()
+})

@@ -20,7 +20,7 @@ describe("Registration input validations", () => {
     beforeEach(() => {
         cy.openRegistrationModal();
     })
-    it("Username field validation", () => {
+    it("Username field validations", () => {
         cy.submitRegistration();
         cy.registrationErrorContains("username is required")
         cy.inputRegistrationUsername(helpers.getInvalidUsername(false));
@@ -64,5 +64,6 @@ describe("Creating new user", () => {
     })
     it("Logins to new user", () => {
         cy.loginToUser(email, pass)
+        cy.get("#logout-buttons").should("be.visible")
     })
 })

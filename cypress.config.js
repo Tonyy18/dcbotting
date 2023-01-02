@@ -11,6 +11,6 @@ module.exports = defineConfig({
     screenshotsFolder: "tests/cypress/screenshots"
   },
   env: {
-    token: "NzA0NDEyMjg5NzU5MDUxOTM2.G8UaV3.9xGErWswXp91lelU-SxvS3MhxVZrnSIaWv7nnc"
+    token: "NzA0NDEyMjg5NzU5MDUxOTM2.GI8i6D.xDo1OaM7fD0eVS6xtqjT1IMg5AE86QCr4Kr5ws"
   }
 })
