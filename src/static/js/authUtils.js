@@ -6,6 +6,9 @@ function passwordsMatch(current, inputs) {
 }
 function validateEmail(current, inputs) {
     const email = inputs[current];
+    if($.trim(email) == "") {
+        return "email is required";
+    }
     const valid = String(email)
                 .toLowerCase()
                 .match(

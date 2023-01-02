@@ -913,7 +913,7 @@ function getUrlParam(param) {
 	}
 }
 
-function getBot(callback = null, error = null) {
+function getBot(callback = () => {}, error = () => {}) {
     const botParam = getUrlParam("bot");
     if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
