@@ -24,6 +24,8 @@
     --main-gray: #99AAB5;
     --main-dark: #2C2F33;
     --main-black: #23272A;
+    --main-red: #F04F4F;
+    --main-red-hover: #C13737;
     --notice-color: #273649;
 }
 body,html {
@@ -46,7 +48,7 @@ input[type=text].input:hover,
 input[type=password].input:hover,
 input[type=text].input:focus,
 input[type=password].input:focus {
-    border: 1px solid white;
+    border: 1px solid var(--main-gray);
 }
 input[type=submit] {
     width: 100%;
@@ -80,6 +82,12 @@ input[type=submit] {
     color: white;
     background-color: transparent;
 }
+.btn.btn-red {
+    background-color: var(--main-red);
+}
+.btn.btn-red:hover {
+    background-color: var(--main-red-hover);
+}
 select {
     height: 45px;
 }
@@ -88,8 +96,7 @@ textarea.error {
     border: 1px solid red;
     color: red;
 }
-input[type=submit],
-.btn-default {
+input[type=submit] {
     color: white;
     text-align: center;
     background-color: var(--main-blue);
@@ -217,7 +224,7 @@ textarea {
 .module .module-body .module-content p {
     margin-bottom: 20px;
 }
-.module input {
+.module input:not([type=checkbox]) {
     width: 100%;
     margin-bottom: 10px;
 }
