@@ -184,14 +184,30 @@ textarea {
     border-radius: 10px;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
-
-.module .module-body header.header-small {
+.module .module-body header .module-close {
+    color: var(--main-gray);
+    font-size: 23px;
+    display: block;
+    cursor: default;
+}
+.module .module-body header .module-close:hover {
+    color: var(--main-blue);
+}
+.module .module-body header {
     padding: 30px;
+}
+.module .module-body header.header-small {
+    display: flex;
+    align-items: center;
+}
+.module .module-body header.header-small p {
     font-size: 16px;
+    flex-grow: 1;
 }
 .module .module-body header.header-big {
-    padding: 30px;
     text-align: center;
+}
+.module .module-body header.header-big p {
     font-size: 25px;
 }
 .module .module-body .module-content {

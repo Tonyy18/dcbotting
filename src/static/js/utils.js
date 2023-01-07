@@ -198,3 +198,8 @@ function closeModal(id) {
     modal.find(".main-error").empty().hide();
     modal.fadeOut();
 }
+$(document).on("click", "[data-modal]" ,function() {
+    showModal($(this).attr("data-modal"))
+}).on("click", "[data-closeModal]", function() {
+    closeModal($(this).attr("data-closeModal"))
+})

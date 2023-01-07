@@ -38,7 +38,7 @@ function createBotCard(id, name, picture) {
     parent.append(imgHolder);
     parent.append('<p class="name">' + name + '</p>')
     const hover = $("<div class='card-hover'></div>")
-    const editButton = $('<button class="bot-hover-btn edit-bot-btn">Edit</button>')
+    const editButton = $('<button class="bot-hover-btn edit-bot-btn" data-modal="editing-modal">Edit</button>')
     const openButton = $('<a href="/editor?bot=' + id + '" class="bot-hover-btn open-bot-btn">Open</a>')
     hover.append(editButton).append(openButton)
     parent.append(hover)
