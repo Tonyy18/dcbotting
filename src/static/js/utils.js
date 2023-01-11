@@ -14,8 +14,13 @@ class Notice {
             this.hide();
         }, 2500)
     }
+    error(text) {
+        this.dom.addClass("notice-error");
+        this.show("error");
+    }
     hide() {
         this.dom.fadeOut(300, () => {
+            this.dom.removeClass("notice-error");
             if(this.queue.length > 0) {
                 const toShow = this.queue[0]
                 this.queue.shift()
@@ -144,6 +149,13 @@ class Requests {
 
     static updateBot(id, data, callback, error) {
         authRequest("/api/bot/" + id, "put", data, (res) => {
+            callback(res);
+        }, (err) => {
+            error(getResponse(err));
+        })
+    }
+    static deleteBot(id, callback, error) {
+        authRequest("/api/bot/" + id, "delete", "", (res) => {
             callback(res);
         }, (err) => {
             error(getResponse(err));

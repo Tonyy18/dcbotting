@@ -4,10 +4,6 @@ function setLoggedInUI() {
     project.notice.show("Successfully logged in");
 }
 
-function logoutUi() {
-    $("#form-buttons").show();
-    $("#logout-buttons").hide();
-}
 isLoggedIn(function() {
     setLoggedInUI();
 }, function(err) {
@@ -26,10 +22,14 @@ setupLoginForm(() => {
 $("#logout-btn").click(function() {
     logout();
     if(project.botLoaded && !project.botLoaded["public"]) {
-        project.clear();
+        const tokenParam = getUrlParam("token");
+        if(tokenParam) {
+            window.location.href = "/editor?token=" + tokenParam
+        } else {
+            window.location.href = "/editor"; 
+        }
     }
     project.notice.show("You are now logged out")
-    logoutUi();
 })
 
 let bot = null;

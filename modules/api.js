@@ -41,6 +41,14 @@ let updateBot = (id, data, callback, error=() => {}) => {
     })
 }
 
+let deleteBot = (id, callback, error=()=>{}) => {
+    db.query("DELETE FROM bots WHERE id=" + id, (result) => {
+        callback(result);
+    }, (err) => {
+        error(err)
+    })
+}
+
 let getMethods = (success, error) => {
     db.query("SELECT * FROM methods ORDER BY name", (results) => {
         success(results)
@@ -61,4 +69,5 @@ exports.getMethods = getMethods
 exports.getBot = getBot;
 exports.saveBot = saveBot;
 exports.updateBot = updateBot;
+exports.deleteBot = deleteBot;
 exports.getBotsByUserId = getBotsByUserId

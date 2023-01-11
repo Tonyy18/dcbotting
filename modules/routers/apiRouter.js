@@ -114,5 +114,12 @@ router.put("/bot/:id", function(req, res) {
         })
     })
 })
+router.delete("/bot/:id", function(req, res) {
+    api.deleteBot(req.params.id, function(result) {
+        responses.ok(res)
+    }, (err) => {
+        responses.internal_server_error(res);
+    })
+})
 
 module.exports = router

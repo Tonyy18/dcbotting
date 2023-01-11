@@ -58,17 +58,18 @@
             <header class="header-small"><p>Edit bot</p><span class="module-close" data-closeModal="editing-modal">x</span></header>
             <div class="module-content bot-editing">
                 <div class="edit-image item-with-overlay">
+                    <input type="file" id="bot-image-selector" hidden accept="image/png, image/jpeg, image/jpg">
                     <img src="/static/images/avatar.jpg" id="edit-bot-image">
-                    <div class="item-hover-overlay">
+                    <label class="item-hover-overlay" for="bot-image-selector">
                         <i class="fas fa-regular fa-upload"></i>
-                    </div>
+                    </label>
                 </div>
                 <div class="edit-metadata">
                     <input type="text" class="input" id="edit-bot-name">
                     <div class="bot-editing-buttons">
                         <div class="checkbox-takeover"><label>Public <input type="checkbox" id="edit-bot-privacy"></label></div>
-                        <button class="btn btn-red">Delete</button>
-                        <button class="btn btn-default">Save</button>
+                        <button class="btn btn-red" id="delete-bot">Delete</button>
+                        <button class="btn btn-default" id="save-bot">Save</button>
                     </div>
                 </div>
             </div>
@@ -99,6 +100,11 @@
             <img src="/static/images/loader.gif" class="loader">
         </div>
     </section>
+</div>
+<div class="notice" id="notice" style="z-index:1000">
+    <p>
+        Bot was not found
+    </p>
 </div>
 <script src="/static/js/utils.js"></script>
 <script src="/static/js/authUtils.js"></script>

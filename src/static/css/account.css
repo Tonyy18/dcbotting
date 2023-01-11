@@ -135,6 +135,7 @@ section .content {
 }
 .bot-editing .bot-editing-buttons .checkbox-takeover {
     flex-grow: 1;
+    text-align: left;
 }
 .bot-editing .bot-editing-buttons label {
     align-items: center;
@@ -145,4 +146,9 @@ section .content {
 }
 .bot-editing .bot-editing-buttons .btn-red {
     margin-right: 10px;
+}
+.section-message {
+    text-align: center;
+    font-size: 18px;
+    color: var(--very-dark-gray);
 }

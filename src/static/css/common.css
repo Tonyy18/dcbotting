@@ -27,6 +27,7 @@
     --main-red: #F04F4F;
     --main-red-hover: #C13737;
     --notice-color: #273649;
+    --very-dark-gray: #212121;
 }
 body,html {
     height: 100%;
@@ -123,6 +124,9 @@ textarea:focus {
     padding: 20px;
     border-radius: 3px;
     display: none;
+}
+.notice.notice-error {
+    background-color: var(--main-red);
 }
 .notice p {
     color: white;
