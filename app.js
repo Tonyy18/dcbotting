@@ -4,6 +4,7 @@ const http = require("http");
 const express = require("express")
 const app = express()
 const dataLimit = "50mb"
+const constants = require("./modules/constants")
 app.use(express.json({limit: dataLimit}))
 app.use(express.urlencoded({limit: dataLimit}))
 
@@ -19,6 +20,9 @@ app.get("/favicon.ico", function(req, res) {
 })
 app.use("", indexRouters);
 
+app.get(constants.botPictureAccessPath + "/:img", (req, res) => {
+    res.sendFile(constants.botPicturesPath + "/" + req.params["img"])
+})
 app.get("/static/*", (req, res) => {
     res.sendFile(__dirname + "/src/" + req.originalUrl)
 })

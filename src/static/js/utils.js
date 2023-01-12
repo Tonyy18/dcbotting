@@ -16,7 +16,7 @@ class Notice {
     }
     error(text) {
         this.dom.addClass("notice-error");
-        this.show("error");
+        this.show(text);
     }
     hide() {
         this.dom.fadeOut(300, () => {
@@ -61,9 +61,9 @@ function getJwtPayload () {
 
     return JSON.parse(jsonPayload);
 }
-function authRequest(url, type, data, callback, error) {
+function authRequest(url, type, data, callback, error=()=>{}) {
     const jwt = getJwt();
-    $.ajax({
+    const ajaxObject = {
         url: url,
         type: type,
         data: data,
@@ -76,7 +76,13 @@ function authRequest(url, type, data, callback, error) {
         error: function(e) {
             error(e)
         }
-    })
+    }
+    if(typeof data == "object" && data.constructor.name == "FormData") {
+        //FormData is needed to send images
+        ajaxObject["contentType"] = false
+        ajaxObject["processData"] = false
+    }
+    $.ajax(ajaxObject)
 }
 
 function getResponse(res) {

@@ -20,7 +20,8 @@ const validations = {
     "username": [2, 20],
     "password": [6, 50],
     "password2": passwordsMatch,
-    "email": validateEmail
+    "email": validateEmail,
+    "name": [2, 30]
 }
 function getInputs(parent) {
     const inputs = $(parent).find("input");

@@ -1,3 +1,4 @@
+
 class EditingModal {
     static parent = $("#editing-modal")
     static imageDom = this.parent.find("#edit-bot-image");
@@ -8,6 +9,7 @@ class EditingModal {
     static close() {
         closeModal("editing-modal")
         this.current = null;
+        this.parent.find("#bot-image-selector").val(null)
     }
 
     static updateValues(data) {
@@ -85,7 +87,6 @@ let editingBot = null;
 $(document).on("click", ".edit-bot-btn", function() {
     const parent = $(this).closest(".bot-card");
     const botId = parent.attr("data-id");
-    console.log(loadedBots[botId])
     EditingModal.updateValues(loadedBots[botId])
 })
 
@@ -95,7 +96,6 @@ $("#bot-image-selector").change(function(e) {
         var reader = new FileReader();
         reader.onload = function(){
             $("#edit-bot-image").attr("src", reader.result);
-            console.log(reader.result);
         };
         reader.readAsDataURL(event.target.files[0]);
     }
@@ -120,4 +120,38 @@ $("#delete-bot").click(function() {
             notice.error(result["message"])
         })
     }
+})
+$("#save-bot").click(function() {
+    //Edit inputs
+    const imageInput = $("#bot-image-selector");
+    const nameInput = $("#edit-bot-name");
+    const name = $.trim(nameInput.val());
+    const privacyInput = $("#edit-bot-privacy");
+    if(name.length < validations.name[0]) {
+        notice.error("Bot name is too short");
+        return
+    }
+    if(name.length > validations.name[1]) {
+        notice.error("Bot name is too long");
+        return;
+    }
+    const form = new FormData();
+    form.append("name", name);
+    if(imageInput[0].files.length > 0) {
+        form.append("picture", imageInput[0].files[0])
+    }
+    form.append("public", privacyInput.is(":checked"))
+    Requests.updateBot(EditingModal.current["id"], form, function(res) {
+        const botId = EditingModal.current["id"]
+        const card = $("#bots-content").find(".bot-card[data-id='" + botId + "']")
+        console.log(res["message"]["picture"])
+        card.find(".image-holder img").attr("src", res["message"]["picture"] + "?" + (new Date()).getTime());
+        card.find("p.name").html(res["message"]["name"])
+        loadedBots[botId] = res["message"]
+        loadedBots[botId]["id"] = botId;
+        EditingModal.close();
+        notice.show("Bot updated successfully")
+    }, (err) => {
+        notice.error(err["message"])
+    })
 })

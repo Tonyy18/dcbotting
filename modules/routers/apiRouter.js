@@ -6,7 +6,8 @@ const api = require("../api");
 const responses = require("../responses");
 const auth = require("../auth");
 const common = require("../common");
-
+const fileUpload = require('express-fileupload')
+const constants = require("../constants");
 router.get("/bot/:id", (req, res) => {
     //Get bot by id
     const id = req.params.id;
@@ -85,8 +86,12 @@ router.post("/bot", function(req, res) {
         responses.internal_server_error(res);
     })
 })
-
+router.use(fileUpload());
 router.put("/bot/:id", function(req, res) {
+    for(key in req.files) {
+        //Add files to the body for easier processing
+        req.body[key] = req.files[key];
+    }
     const id = req.params.id;
     db.getCols("bots", (result) => {
         for(key in req.body) {
@@ -106,7 +111,7 @@ router.put("/bot/:id", function(req, res) {
                 return;
             }
             api.updateBot(id, req.body, (re) => {
-                responses.ok(res);
+                responses.ok(res, req.body);
                 return;
             }, (err) => {
                 responses.internal_server_error(res);
