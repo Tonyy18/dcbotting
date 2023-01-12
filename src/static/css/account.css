@@ -63,10 +63,10 @@ section .content {
     text-align: center;
     word-wrap: break-word;
 }
-.bot-card:hover .card-hover {
+.item-with-overlay:hover .item-hover-overlay {
     display: flex;
 }
-.bot-card .card-hover {
+.item-hover-overlay {
     height: 100%;
     position: absolute;
     top: 0px;
@@ -80,7 +80,7 @@ section .content {
     align-items: center;
     flex-direction: column;
 }
-.bot-card .card-hover .bot-hover-btn {
+.bot-card .item-hover-overlay .bot-hover-btn {
     display: block;
     width: 100px;
     text-align: center;
@@ -92,15 +92,63 @@ section .content {
     padding: 5px 0;
     cursor: pointer;
 }
-.bot-card .card-hover .edit-bot-btn {
+.bot-card .item-hover-overlay .edit-bot-btn {
     background-color: #00CC66;
 }
-.bot-card .card-hover .edit-bot-btn:hover {
+.bot-card .item-hover-overlay .edit-bot-btn:hover {
     background-color: #00A955;
 }
-.bot-card .card-hover .open-bot-btn {
+.bot-card .item-hover-overlay .open-bot-btn {
     background-color: var(--main-blue);
 }
-.bot-card .card-hover .open-bot-btn:hover {
+.bot-card .item-hover-overlay .open-bot-btn:hover {
     background-color: var(--main-blue-hover);
+}
+.bot-editing {
+    display: flex;
+}
+.bot-editing .edit-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}
+.bot-editing .edit-image > img {
+    height: 100%;
+    width: 100%;
+}
+.bot-editing .edit-image > * {
+    border-radius: 100%;
+    cursor: pointer;
+}
+.bot-editing .edit-image .fa-upload {
+    color: var(--main-dark);
+    font-size: 25px;
+}
+.bot-editing .edit-metadata {
+    flex-grow: 1;
+    padding-left: 30px;
+}
+.bot-editing .bot-editing-buttons {
+    display: flex;
+    align-items: center;
+    padding-top: 20px;
+}
+.bot-editing .bot-editing-buttons .checkbox-takeover {
+    flex-grow: 1;
+    text-align: left;
+}
+.bot-editing .bot-editing-buttons label {
+    align-items: center;
+    font-size: 18px;
+}
+.bot-editing .bot-editing-buttons label input[type=checkbox] {
+    margin-left: 15px;
+}
+.bot-editing .bot-editing-buttons .btn-red {
+    margin-right: 10px;
+}
+.section-message {
+    text-align: center;
+    font-size: 18px;
+    color: var(--very-dark-gray);
 }

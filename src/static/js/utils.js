@@ -14,8 +14,13 @@ class Notice {
             this.hide();
         }, 2500)
     }
+    error(text) {
+        this.dom.addClass("notice-error");
+        this.show(text);
+    }
     hide() {
         this.dom.fadeOut(300, () => {
+            this.dom.removeClass("notice-error");
             if(this.queue.length > 0) {
                 const toShow = this.queue[0]
                 this.queue.shift()
@@ -56,9 +61,9 @@ function getJwtPayload () {
 
     return JSON.parse(jsonPayload);
 }
-function authRequest(url, type, data, callback, error) {
+function authRequest(url, type, data, callback, error=()=>{}) {
     const jwt = getJwt();
-    $.ajax({
+    const ajaxObject = {
         url: url,
         type: type,
         data: data,
@@ -71,7 +76,13 @@ function authRequest(url, type, data, callback, error) {
         error: function(e) {
             error(e)
         }
-    })
+    }
+    if(typeof data == "object" && data.constructor.name == "FormData") {
+        //FormData is needed to send images
+        ajaxObject["contentType"] = false
+        ajaxObject["processData"] = false
+    }
+    $.ajax(ajaxObject)
 }
 
 function getResponse(res) {
@@ -149,6 +160,13 @@ class Requests {
             error(getResponse(err));
         })
     }
+    static deleteBot(id, callback, error) {
+        authRequest("/api/bot/" + id, "delete", "", (res) => {
+            callback(res);
+        }, (err) => {
+            error(getResponse(err));
+        })
+    }
 
     static getMethods(_success, _error, _async=true) {
         $.ajax({
@@ -198,3 +216,8 @@ function closeModal(id) {
     modal.find(".main-error").empty().hide();
     modal.fadeOut();
 }
+$(document).on("click", "[data-modal]" ,function() {
+    showModal($(this).attr("data-modal"))
+}).on("click", "[data-closeModal]", function() {
+    closeModal($(this).attr("data-closeModal"))
+})
