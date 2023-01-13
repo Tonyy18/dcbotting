@@ -4,3 +4,4 @@ cypress.env.json
 */cypress/downloads/
 */cypress/screenshots/
 data/bot_pictures/
+*.pyc
