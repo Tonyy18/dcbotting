@@ -10,6 +10,9 @@ def ready(ob, data):
     ob.setId(data["user"]["id"])
     ob.setAvatar(data["user"]["avatar"])
 
+def guild_create(ob, data):
+    ob.addGuild(data)
+
 class Bot(BotData.BotData):
     
     def __init__(self, token):
@@ -28,13 +31,13 @@ class Bot(BotData.BotData):
 
     def on(self, event):
         def wrapper_func(func):
-            if(len(self.events) == 0):
+            if(event not in self.events):
                 self.events[event] = []
             self.events[event].append(func)
         return wrapper_func
 
     def __on(self, name, callback):
-        if(len(self.__events) == 0):
+        if(name not in self.__events):
             self.__events[name] = []
         self.__events[name].append(callback)
 
@@ -42,7 +45,6 @@ class Bot(BotData.BotData):
         self.ws.send(json.dumps(data))
 
     def __identify(self):
-        print("identify")
         self.send({
             "op": 2,
             "d": {
@@ -60,7 +62,6 @@ class Bot(BotData.BotData):
             "op": 1,
             "d": self.sequencyNum
         })
-        print("heartbeat")
 
     def __runHeartbeatThread(self, data):
         self.__sendHeartbeat()
@@ -92,7 +93,7 @@ class Bot(BotData.BotData):
                     self.opMappings[opCode](data)
                 elif(eventName != None):
                     eventName = eventName.lower()
-                    print(eventName)
+                    print("event: " + eventName)
                     if(eventName in self.__events):
                         for a in range(0, len(self.__events[eventName])):
                             self.__events[eventName][a](self, data)
@@ -107,3 +108,5 @@ class Bot(BotData.BotData):
     def __initDefaultEvents(self):
         self.__events = {}
         self.__on("ready", ready)
+        self.__on("guild_create", guild_create)
+        self.__on("guild_update", guild_create)

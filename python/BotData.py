@@ -20,3 +20,12 @@ class BotData:
     
     def getAvatar(self):
         return self.__avatar
+
+    def addGuild(self, guild):
+        self.__guilds[guild["name"]] = guild
+
+    def getAllGuilds(self):
+        return self.__guilds
+
+    def getGuild(self, name):
+        return self.__guilds[name]
