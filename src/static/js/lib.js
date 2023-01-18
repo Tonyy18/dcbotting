@@ -140,8 +140,8 @@ function projectToJson() {
         const inputRows = $(event).find("> .component-dropdown > .component-statements .input-row");
         for(let b = 0; b < inputRows.length; b++) {
             const inputRow = $(inputRows[b]);
-            const value1 = inputRow.find("[name='value1']").val();
-            const value2 = inputRow.find("[name='value2']").val();
+            const value1 = inputRow.find("[name='value1']").val().replaceAll('"', '\\"');
+            const value2 = inputRow.find("[name='value2']").val().replaceAll('"', '\\"');
             const delimeter = inputRow.find("[name='delimeter']").val();
             data["data"][eventName]["expressions"].push({
                 "value1": value1,
@@ -157,8 +157,8 @@ function projectToJson() {
             const inputRows = $(method).find("> .component-dropdown > .component-statements .input-row");
             for(let b = 0; b < inputRows.length; b++) {
                 const inputRow = $(inputRows[b]);
-                const value1 = inputRow.find("[name='value1']").val();
-                const value2 = inputRow.find("[name='value2']").val();
+                const value1 = inputRow.find("[name='value1']").val().replaceAll('"', '\\"');;
+                const value2 = inputRow.find("[name='value2']").val().replaceAll('"', '\\"');;
                 const delimeter = inputRow.find("[name='delimeter']").val();
                 data["data"][eventName]["methods"][methodName]["expressions"].push({
                     "value1": value1,
@@ -173,6 +173,8 @@ function projectToJson() {
                 let value = input.val()
                 if(input.attr("type") == "checkbox") {
                     value = input.is(":checked");
+                } else {
+                    value = value.replaceAll('"', '\\"');
                 }
                 data["data"][eventName]["methods"][methodName]["inputs"][input.attr("name")] = value;
             }
@@ -922,7 +924,6 @@ function getBot(callback = () => {}, error = () => {}) {
     if(botParam && botParam != "undefined") {
         Requests.getBot(botParam, (result) => {
             project.botLoaded = result["message"];
-            project.botLoaded["data"] = JSON.parse(project.botLoaded["data"]);
             project.notice.show(result["message"]["name"] + " loaded")
             Logger.success('Bot "' + result["message"]["name"] + '" loaded successfully', )
             callback(project.botLoaded["data"], botParam)

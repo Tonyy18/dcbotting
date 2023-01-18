@@ -3,6 +3,9 @@ const constants = require("./constants");
 const fs = require("fs")
 let getBot = (id, callback, error) => {
     db.query("SELECT * FROM bots WHERE id='" + id + "'", (result) => {
+        if(result.length > 0) {
+            result[0]["data"] = JSON.parse(result[0]["data"])
+        }
         callback(result[0])
     }, (err) => {
         error(err);

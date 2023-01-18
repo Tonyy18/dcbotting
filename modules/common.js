@@ -15,7 +15,7 @@ class ValidatorValues {
 
 class Validator {
     static username(text) {
-        if(text.length < ValidatorValues.username.minLenth) {
+        if(text.length < ValidatorValues.username.minLength) {
             return "username is too short"
         }
         if(text.length > ValidatorValues.username.maxLength) {
@@ -35,7 +35,7 @@ class Validator {
         return true;
     }
     static password(text) {
-        if(text.length < ValidatorValues.password.minLenth) {
+        if(text.length < ValidatorValues.password.minLength) {
             return "password is too short"
         }
         if(text.length > ValidatorValues.password.maxLength) {
@@ -44,11 +44,11 @@ class Validator {
         return true;
     }
     static name(text) {
-        if(text.length > ValidatorValues.name.minLenth) {
-            return "bot name is too long"
-        }
-        if(text.length < ValidatorValues.name.maxLength) {
+        if(text.length < ValidatorValues.name.minLength) {
             return "bot name is too short";
+        }
+        if(text.length > ValidatorValues.name.maxLength) {
+            return "bot name is too long"
         }
         return true;
     } 
