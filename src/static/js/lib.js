@@ -3,6 +3,10 @@ function setLoggedInUI() {
     $("#logout-buttons").show();
     project.notice.show("Successfully logged in");
 }
+function setLogoutUi() {
+    $("#form-buttons").show();
+    $("#logout-buttons").hide();
+}
 
 isLoggedIn(function() {
     setLoggedInUI();
@@ -21,6 +25,7 @@ setupLoginForm(() => {
 })
 $("#logout-btn").click(function() {
     logout();
+    setLogoutUi();
     if(project.botLoaded && !project.botLoaded["public"]) {
         const tokenParam = getUrlParam("token");
         if(tokenParam) {
